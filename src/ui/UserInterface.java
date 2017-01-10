@@ -1,5 +1,9 @@
 package ui;
 
-public class UserInterface {
+import java.util.List;
 
+import model.Elevator;
+
+public class UserInterface {
+	private List<Elevator> elevators;
 }
