@@ -7,6 +7,10 @@ import model.Elevator;
 public class ElevatorManager {
 	private List<Elevator> elevators;
 	
+	
+	
+	
+	
 	public void updateElevators() {
 		
 	}
