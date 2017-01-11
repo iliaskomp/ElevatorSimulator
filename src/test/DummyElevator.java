@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 import sqelevator.IElevator;
 
-public class dummyElevator implements IElevator {
+public class DummyElevator implements IElevator {
 
 	// Number of floors in the building
 	private static final int FLOORS = 17;
@@ -25,7 +25,7 @@ public class dummyElevator implements IElevator {
 	private float position, speed;
 	private long time;
 
-	public dummyElevator() {
+	public DummyElevator() {
 		acceleration = target = 0;
 		position = speed = 0;
 		time = System.currentTimeMillis();

@@ -15,20 +15,23 @@ public class ElevatorManager {
 	private IElevator controller;
 	private List<Floor> floors;
 
-	private UserInterface ui;
+	private SwingUserInterface ui;
 
 	public ElevatorManager(IElevator controller) throws RemoteException {
-		this.controller = controller;
+		this.controller = controller;	
+		createFloorsList();
 		
+	}
+	
+	public void addElevators() throws RemoteException {
 		elevators = new ArrayList<Elevator>();
 		for (int i = 0; i < controller.getElevatorNum(); i++) {
 			elevators.add(new Elevator(i));
+			ui.addToElevatorSelector("Elevator " + i);
 		}			
 		
-		createFloorsList();
-	}
+	}	
 	
-
 	public void addElevator(Elevator elevator) throws RemoteException {
 		elevators.add(elevator);		
 		elevator.setFloors(floors);
@@ -70,12 +73,13 @@ public class ElevatorManager {
 		return elevators;
 	}
 	
-	public UserInterface getUi() {
+	public SwingUserInterface getUi() {
 		return ui;
 	}
 
-	public void setUi(UserInterface ui) {
+	public void setUi(SwingUserInterface ui) throws RemoteException {
 		this.ui = ui;
+		addElevators();
 	}
 
 }

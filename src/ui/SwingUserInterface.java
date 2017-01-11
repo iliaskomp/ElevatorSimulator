@@ -30,7 +30,7 @@ public class SwingUserInterface implements UserInterface {
 	private JTextField doorsTextField;
 	private JTextField targetTextField;
 	private JButton goTargetButton;	
-	
+	private JFrame frame;
 
 	private JComboBox<String> elevatorSelector;
 	
@@ -40,13 +40,14 @@ public class SwingUserInterface implements UserInterface {
 	}
 
 	public void show() {
-		JFrame frame = new JFrame("HelloWorldSwing");
+		frame = new JFrame("HelloWorldSwing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 
 		elevatorSelector = new JComboBox<String>();
-		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
+	//	elevatorSelector.addItem("Elevator 1");
 
+		
 		JPanel elevatorPanel = new JPanel();
 		JPanel dataPanel = new JPanel();
 
@@ -71,7 +72,6 @@ public class SwingUserInterface implements UserInterface {
 	private void updateElevatorPanel(JPanel elevatorPanel) {
 
 	}			
-
 
 	private void updateDataPanel(JPanel dataPanel) {
 		  //  String[] labels = {"Position: ", "Direction: ", "Speed: ", "Payload: ", "Doors: "};
@@ -155,8 +155,10 @@ public class SwingUserInterface implements UserInterface {
 	        dataPanel.add(dataListPanel);
 	}
 
-	public void addToElevatorSelector(Elevator e) {
-		elevatorSelector.addItem("Elevator " + e.getElevatorNumber());
+	public void addToElevatorSelector(String elevatorName) {
+		elevatorSelector.addItem(elevatorName);
+		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
+
 	}
 	
 	// Getters/Setters
