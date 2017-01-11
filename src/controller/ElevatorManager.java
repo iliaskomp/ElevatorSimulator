@@ -87,7 +87,7 @@ public class ElevatorManager {
 	}
 
 	// Getters/Setters
-	public int getNumberOfFloors() throws RemoteException {
+	public static int getNumberOfFloors() throws RemoteException {
 		return controller.getFloorNum();
 	}
 

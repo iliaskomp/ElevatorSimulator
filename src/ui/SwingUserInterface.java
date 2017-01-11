@@ -39,7 +39,8 @@ public class SwingUserInterface implements UserInterface {
 	private JFrame frame;
 	private JComboBox<String> elevatorSelector;
 	private boolean manualMode;	
-
+	private JPanel elevatorPanel;
+	
 	public void update(List<Elevator> elevators) {
 		Elevator selectedElevator = null;
 		String eString = getSelectedElevator();
@@ -51,6 +52,7 @@ public class SwingUserInterface implements UserInterface {
 		}
 
 		updateUiData(selectedElevator);
+		updateElevatorPanel(selectedElevator);
 	}
 	
 	private void updateUiData(Elevator e) {
@@ -61,7 +63,7 @@ public class SwingUserInterface implements UserInterface {
 			setPayloadTextField(e.getWeight() + "");
 			setDoorStatusTextField(e.getDoorStatus() + "");
 		}
-
+		
 	}
 
 	public void show() {
@@ -72,7 +74,7 @@ public class SwingUserInterface implements UserInterface {
 		elevatorSelector = new JComboBox<String>();
 		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
 
-		JPanel elevatorPanel = new ElevatorPanel();
+		elevatorPanel = new ElevatorPanel();
 		JPanel dataPanel = new JPanel();
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, elevatorPanel, dataPanel);
@@ -82,7 +84,7 @@ public class SwingUserInterface implements UserInterface {
 
 		frame.getContentPane().add(splitPane,BorderLayout.CENTER);
 
-		updateElevatorPanel(elevatorPanel);
+		//updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
 		
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
@@ -94,8 +96,9 @@ public class SwingUserInterface implements UserInterface {
 
 
 
-	private void updateElevatorPanel(JPanel elevatorPanel) {
-		elevatorPanel.repaint();
+	private void updateElevatorPanel(Elevator e) {	
+		((ElevatorPanel) elevatorPanel).setElevatorHeight(e.getPosition());
+		
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
@@ -103,7 +106,7 @@ public class SwingUserInterface implements UserInterface {
 	        JPanel dataListPanel = new JPanel(new SpringLayout());
 
 	        // Position
-            JLabel positionLabel = new JLabel("Position: ", JLabel.TRAILING);
+            JLabel positionLabel = new JLabel("Position (Feet): ", JLabel.TRAILING);
             dataListPanel.add(positionLabel);
             positionTextField = new JTextField(5);
             positionLabel.setLabelFor(positionTextField);
