@@ -11,12 +11,11 @@ import javax.swing.JSplitPane;
 
 import model.Elevator;
 
-public class SwingUserInterface extends UserInterface {
-
-	@Override
+public class SwingUserInterface implements UserInterface {		
+		
 	public void update(List<Elevator> elevators) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void show() {
@@ -40,5 +39,25 @@ public class SwingUserInterface extends UserInterface {
 
 		frame.pack();
 		frame.setVisible(true);
+		
+		
+		updateElevatorPanel(elevatorPanel);
+		updateDataPanel(dataPanel);
+		
 	}
+
+	
+	
+	private void updateElevatorPanel(JPanel elevatorPanel) {
+		BorderLayout list = new BorderLayout();
+		
+		
+	}			
+
+
+	private void updateDataPanel(JPanel dataPanel) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

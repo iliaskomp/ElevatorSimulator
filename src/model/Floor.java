@@ -7,7 +7,7 @@ public class Floor {
 	private int floor;
 	
 	public Floor(int floor) {
-		this.floor = floor;
+		this.setFloor(floor);
 	}
 
 	public boolean isUpCall() {
@@ -32,6 +32,14 @@ public class Floor {
 
 	public void setStopRequest(boolean stopRequest) {
 		this.stopRequest = stopRequest;
+	}
+
+	public int getFloor() {
+		return floor;
+	}
+
+	public void setFloor(int floor) {
+		this.floor = floor;
 	}
 	
 	

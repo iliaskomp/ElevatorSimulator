@@ -1,41 +1,50 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import sqelevator.IElevator;
-
 public class Elevator {
-	private int position;
+	private int elevatorNumber;
+	private int position; // position in feet
+	private int positionNearestFloor; // position in relation to nearest floor
 	private int speed;
 	private int weight;
+	private int doorStatus;
+	private boolean manualMode;
 
-	private enum Direction {UP, DOWN, NONE};
-	private boolean doorStatus;
-	private int nearestFloor;
 	private List<Floor> floors;
+	private enum Direction {UP, DOWN, NONE};
 	
-	
-	public Elevator(int numberOfFloors) {
-		floors = new ArrayList<>();
-		for (int i = 0; i < numberOfFloors; i++) {
-			floors.add(new Floor(i));
-		}
+	public Elevator(int elevatorNumber) {
+		this.elevatorNumber = elevatorNumber;				
 	}
-		
-	public void update(IElevator controller) {
-		
+
+	
+	
+	// Getters/Setters			
+	public int getElevatorNumber() {
+		return elevatorNumber;
+	}
+
+	public void setElevatorNumber(int elevatorNumber) {
+		this.elevatorNumber = elevatorNumber;
+	}
+
+	public int getDoorStatus() {
+		return doorStatus;
 	}
 	
+	public void setDoorStatus(int doorStatus) {
+		this.doorStatus = doorStatus;
+	}
 	
 	public int getPosition() {
 		return position;
 	}
-
+	
 	public void setPosition(int position) {
 		this.position = position;
 	}
-
+	
 	public int getSpeed() {
 		return speed;
 	}
@@ -43,21 +52,21 @@ public class Elevator {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-
-	public boolean isDoorStatus() {
-		return doorStatus;
+	
+	public boolean isManualMode() {
+		return manualMode;
 	}
 
-	public void setDoorStatus(boolean doorStatus) {
-		this.doorStatus = doorStatus;
+	public void setManualMode(boolean manualMode) {
+		this.manualMode = manualMode;
 	}
-
+	
 	public int getNearestFloor() {
-		return nearestFloor;
+		return positionNearestFloor;
 	}
 
 	public void setNearestFloor(int nearestFloor) {
-		this.nearestFloor = nearestFloor;
+		this.positionNearestFloor = nearestFloor;
 	}
 
 	public List<Floor> getFloors() {
