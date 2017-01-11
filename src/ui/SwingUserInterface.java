@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,12 +13,14 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -80,6 +84,7 @@ public class SwingUserInterface implements UserInterface {
 		updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
 		
+		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
 		frame.setVisible(true);
 		frame.pack();
 
@@ -95,42 +100,52 @@ public class SwingUserInterface implements UserInterface {
 	        //Create and populate the panel.
 	        JPanel dataListPanel = new JPanel(new SpringLayout());
 
+	        // Position
             JLabel positionLabel = new JLabel("Position: ", JLabel.TRAILING);
             dataListPanel.add(positionLabel);
             positionTextField = new JTextField(5);
             positionLabel.setLabelFor(positionTextField);
             positionTextField.setFocusable(false);
             dataListPanel.add(positionTextField);
-
+            dataListPanel.add(new JLabel(""));
+            
+            // Direction
             JLabel directionLabel = new JLabel("Direction: ", JLabel.TRAILING);
             dataListPanel.add(directionLabel);
             directionTextField = new JTextField(5);
             directionLabel.setLabelFor(directionTextField);
             directionTextField.setFocusable(false);
             dataListPanel.add(directionTextField);
+            dataListPanel.add(new JLabel(""));
 
+            // Speed
             JLabel speedLabel = new JLabel("Speed: ", JLabel.TRAILING);
             dataListPanel.add(speedLabel);
             speedTextField = new JTextField(5);
             speedLabel.setLabelFor(speedTextField);
             speedTextField.setFocusable(false);
             dataListPanel.add(speedTextField);
+            dataListPanel.add(new JLabel(""));
 
+            // Payload
             JLabel payloadLabel = new JLabel("Payload: ", JLabel.TRAILING);
             dataListPanel.add(payloadLabel);
             payloadTextField = new JTextField(5);
             payloadLabel.setLabelFor(payloadTextField);
             payloadTextField.setFocusable(false);
             dataListPanel.add(payloadTextField);
-            
+            dataListPanel.add(new JLabel(""));
+
+            // Door Status
             JLabel doorStatusLabel = new JLabel("Door Status: ", JLabel.TRAILING);
             dataListPanel.add(doorStatusLabel);
             doorsTextField = new JTextField(5);
             doorStatusLabel.setLabelFor(doorsTextField);
             doorsTextField.setFocusable(false);
             dataListPanel.add(doorsTextField);
+            dataListPanel.add(new JLabel(""));
 
-
+            // Target
             JLabel targetLabel = new JLabel("Target Floor: ", JLabel.TRAILING);
             dataListPanel.add(targetLabel);
             targetTextField = new JTextField(5);
@@ -138,44 +153,39 @@ public class SwingUserInterface implements UserInterface {
             dataListPanel.add(targetTextField);
             targetTextField.setBackground(new Color(0, 255, 0));
 
-
-            JLabel emptyLabel = new JLabel();
-            dataListPanel.add(emptyLabel);
             goTargetButton = new JButton("GO");
             dataListPanel.add(goTargetButton);
-
             goTargetButton.addActionListener(new ActionListener() {				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int targetFloor = Integer.parseInt(targetTextField.getText());
-					System.out.println(targetFloor);
 					try {
 						ElevatorManager.setTargetFloor(0, targetFloor);
 					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
 				}
 			});
-            
-            // Create list of labels to change font etc.
-            List<JLabel> labels = new ArrayList<>();
-            labels.add(positionLabel);
-            labels.add(directionLabel);
-            labels.add(speedLabel);
-            labels.add(payloadLabel);
-            labels.add(doorStatusLabel);
-            labels.add(targetLabel);
 
-            for (JLabel l : labels) {
-                l.setFont(new Font("Roboto", Font.PLAIN, 18));
+            // Mode
+            JLabel modeLabel = new JLabel("Mode: ", JLabel.TRAILING);
+            dataListPanel.add(modeLabel);
+            payloadTextField = new JTextField(5);
+            payloadLabel.setLabelFor(payloadTextField);
+            payloadTextField.setFocusable(false);
 
-            }
+            JRadioButton automaticButton = new JRadioButton("Automatic");
+            JRadioButton manualButton = new JRadioButton("Manual");
+            ButtonGroup group = new ButtonGroup();
+            group.add(automaticButton);
+            group.add(manualButton);
+            dataListPanel.add(automaticButton);
+            dataListPanel.add(manualButton);                                            
 
 	        //Lay out the panel.
 	        SpringUtilities.makeCompactGrid(dataListPanel,
-	                                        7, 2, 		   //rows, cols
+	                                        7, 3, 		   //rows, cols
 	                                        10, 10,        //initX, initY
 	                                        10, 10);       //xPad, yPad
 
@@ -183,10 +193,19 @@ public class SwingUserInterface implements UserInterface {
 	        dataListPanel.setOpaque(true);  //content panes must be opaque
 
 	        dataPanel.add(dataListPanel);
-			frame.pack();
 
 	}
-
+	public static void changeFont ( Component component, Font font )
+	{
+	    component.setFont ( font );
+	    if ( component instanceof Container )
+	    {
+	        for ( Component child : ( ( Container ) component ).getComponents () )
+	        {
+	            changeFont ( child, font );
+	        }
+	    }
+	}
 	// Getters/Setters
 	public void setPositionTextField(String position) {
 		positionTextField.setText(position);
