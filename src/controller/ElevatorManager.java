@@ -70,7 +70,7 @@ public class ElevatorManager {
 
 		e.setPosition(controller.getElevatorPosition(n));
 		e.setSpeed(controller.getElevatorSpeed(n));
-		e.setWeight(controller.getElevatorCapacity(n));
+		e.setWeight(controller.getElevatorWeight(n));
 		e.setDoorStatus(controller.getElevatorDoorStatus(n));
 		e.setNearestFloor(controller.getElevatorFloor(n));
 	}

@@ -56,7 +56,7 @@ public class SwingUserInterface implements UserInterface {
 	private void updateUiData(Elevator e) {
 		if (e != null ) {
 			setPositionTextField(e.getPosition() + "");
-//			ui.setDirectionTextField(e.getDirection() + "");
+//			ui.setDirectionTextField(e.getDirection() + "");			
 			setSpeedTextField(e.getSpeed() + "");
 			setPayloadTextField(e.getWeight() + "");
 			setDoorStatusTextField(e.getDoorStatus() + "");
@@ -164,17 +164,13 @@ public class SwingUserInterface implements UserInterface {
 						ElevatorManager.setTargetFloor(0, targetFloor);
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
-					}
-					
+					}					
 				}
 			});
 
             // Mode
             JLabel modeLabel = new JLabel("Mode: ", JLabel.TRAILING);
             dataListPanel.add(modeLabel);
-            payloadTextField = new JTextField(5);
-            payloadLabel.setLabelFor(payloadTextField);
-            payloadTextField.setFocusable(false);
 
             JRadioButton automaticButton = new JRadioButton("Automatic");
             JRadioButton manualButton = new JRadioButton("Manual");
@@ -188,6 +184,8 @@ public class SwingUserInterface implements UserInterface {
 				public void actionPerformed(ActionEvent e) {				
 					System.out.println("Automatic mode activated");
 					manualMode = true;
+	            	goTargetButton.setEnabled(false);
+
 				}
 			});
             manualButton.addActionListener(new ActionListener() {			
@@ -195,9 +193,11 @@ public class SwingUserInterface implements UserInterface {
 				public void actionPerformed(ActionEvent e) {				
 					System.out.println("Manual mode activated");
 					manualMode = false;
+	            	goTargetButton.setEnabled(true);
+
 				}
 			});
-            
+
             
 	        //Lay out the panel.
 	        SpringUtilities.makeCompactGrid(dataListPanel,
