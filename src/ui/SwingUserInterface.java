@@ -67,7 +67,7 @@ public class SwingUserInterface implements UserInterface {
 		elevatorSelector = new JComboBox<String>();
 		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
 
-		JPanel elevatorPanel = new JPanel();
+		JPanel elevatorPanel = new ElevatorPanel();
 		JPanel dataPanel = new JPanel();
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, elevatorPanel, dataPanel);
