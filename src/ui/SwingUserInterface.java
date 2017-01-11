@@ -38,7 +38,8 @@ public class SwingUserInterface implements UserInterface {
 	private JButton goTargetButton;
 	private JFrame frame;
 	private JComboBox<String> elevatorSelector;
-	
+	private boolean manualMode;	
+
 	public void update(List<Elevator> elevators) {
 		Elevator selectedElevator = null;
 		String eString = getSelectedElevator();
@@ -182,7 +183,22 @@ public class SwingUserInterface implements UserInterface {
             group.add(manualButton);
             dataListPanel.add(automaticButton);
             dataListPanel.add(manualButton);                                            
-
+            automaticButton.addActionListener(new ActionListener() {				
+				@Override
+				public void actionPerformed(ActionEvent e) {				
+					System.out.println("Automatic mode activated");
+					manualMode = true;
+				}
+			});
+            manualButton.addActionListener(new ActionListener() {			
+				@Override
+				public void actionPerformed(ActionEvent e) {				
+					System.out.println("Manual mode activated");
+					manualMode = false;
+				}
+			});
+            
+            
 	        //Lay out the panel.
 	        SpringUtilities.makeCompactGrid(dataListPanel,
 	                                        7, 3, 		   //rows, cols
@@ -197,15 +213,27 @@ public class SwingUserInterface implements UserInterface {
 	}
 	public static void changeFont ( Component component, Font font )
 	{
-	    component.setFont ( font );
-	    if ( component instanceof Container )
-	    {
-	        for ( Component child : ( ( Container ) component ).getComponents () )
-	        {
-	            changeFont ( child, font );
+	    component.setFont(font);
+	    if ( component instanceof Container ) {
+	        for ( Component child : ((Container)component).getComponents()) {
+	            changeFont (child, font);
 	        }
 	    }
 	}
+	
+	@Override
+	public void addElevator(String elevatorName) {
+		elevatorSelector.addItem(elevatorName);
+	}
+
+	@Override
+	public void showError(String message) {
+		JOptionPane.showMessageDialog(frame,
+			    message,
+			    "Error",
+			    JOptionPane.ERROR_MESSAGE);
+	}
+	
 	// Getters/Setters
 	public void setPositionTextField(String position) {
 		positionTextField.setText(position);
@@ -239,18 +267,13 @@ public class SwingUserInterface implements UserInterface {
 	public String getSelectedElevator() {
 		return elevatorSelector.getSelectedItem().toString();
 	}
-
-	@Override
-	public void addElevator(String elevatorName) {
-		elevatorSelector.addItem(elevatorName);
+	
+	public boolean isManualMode() {
+		return manualMode;
 	}
 
-	@Override
-	public void showError(String message) {
-		JOptionPane.showMessageDialog(frame,
-			    message,
-			    "Error",
-			    JOptionPane.ERROR_MESSAGE);
+	public void setManualMode(boolean manualMode) {
+		this.manualMode = manualMode;
 	}
 
 }
