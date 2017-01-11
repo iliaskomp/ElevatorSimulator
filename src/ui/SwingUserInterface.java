@@ -86,15 +86,16 @@ public class SwingUserInterface implements UserInterface {
 		updateDataPanel(dataPanel);
 		
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
-		frame.setVisible(true);
+		frame.setPreferredSize(new Dimension(1000, 500));
 		frame.pack();
+		frame.setVisible(true);
 
 	}
 
 
 
 	private void updateElevatorPanel(JPanel elevatorPanel) {
-
+		elevatorPanel.repaint();
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
