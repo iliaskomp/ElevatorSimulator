@@ -11,15 +11,16 @@ public class DummyElevator implements IElevator {
 	// Number of elevators in the building
 	private static final int ELEVATORS = 1;
 	// Maximum speed of the elevator
-	private static final int MAX_SPEED = 2;
+	private static final int MAX_SPEED = 3;
 	// Floor height in the building
 	private static final int FLOOR_HEIGHT = 6;
 	// Acceleration of the elevator
 	private static final int ACCEL = 1;
 	// Ticks per second of the simulation (max 1000)
-	private static final int TICK = 1;
+	private static final int TICK = 4;
 	// The smallest amount of distance that may simulated in a TICK
-	private static final float EPSILON_DISTANCE = (float) ((ACCEL / 2.0f) * Math.pow(1000 / TICK, 2));
+	private static final float EPSILON_DISTANCE = (float) ((ACCEL / 2.0f)
+			* Math.pow((1000 / (float) TICK) / 1000.0f, 2));
 	private static final float EPSILON = 0.001f;
 	private int acceleration, target;
 	private float position, speed;
@@ -45,17 +46,22 @@ public class DummyElevator implements IElevator {
 	private void simulate() throws RemoteException {
 		if (TICK > 1000 || TICK < 1)
 			throw new RemoteException("Invalid tick rate.");
+
 		long newTime = System.currentTimeMillis();
+		double simulatedTicks = 1000.0d / TICK;
+
+		if (newTime-time < simulatedTicks) return;
+
+		double simulatedTime = simulatedTicks / 1000.0d;
 		float targetHeight = target * FLOOR_HEIGHT;
-		double simulatedTime = 1000 / (double) TICK;
-		if (targetHeight - position > EPSILON_DISTANCE) {
-			for (double i = time; i < newTime; i += simulatedTime) {
+		if (Math.abs(targetHeight - position) > EPSILON_DISTANCE) {
+			for (double i = time; i < newTime-simulatedTicks; i += simulatedTicks) {
 				int direction = targetHeight > position ? 1 : -1;
-				float distance = position - targetHeight;
+				float distance = Math.abs(position - targetHeight);
 				// Check for modifing the accelartion
 				if (acceleration == 0 || Math.abs(acceleration) == acceleration * direction) {
 					float distanceToBreak = (float) Math.pow(speed, 2) / (2 * ACCEL);
-					if (distanceToBreak < distance) {
+					if (distance < distanceToBreak) {
 						acceleration = ACCEL * direction * -1;
 					} else if (Math.abs(Math.abs(speed) - MAX_SPEED) > EPSILON) {
 						acceleration = ACCEL * direction;
