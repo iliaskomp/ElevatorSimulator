@@ -77,13 +77,11 @@ public class SwingUserInterface implements UserInterface {
 
 		frame.getContentPane().add(splitPane,BorderLayout.CENTER);
 
-
 		updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
 		
 		frame.setVisible(true);
 		frame.pack();
-
 
 	}
 
