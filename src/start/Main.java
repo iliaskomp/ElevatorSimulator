@@ -26,6 +26,7 @@ public class Main {
 			public void run() {
 				ui.show();
 				manager.setUi(ui);
+				ui.setElevatorManager(manager);
 			}
 		});
 

@@ -9,10 +9,10 @@ import model.Floor;
 import sqelevator.IElevator;
 import ui.UserInterface;
 
-public class ElevatorManager {
+public class ElevatorManager implements ElevatorManagerInterface {
 	private static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
-	private static IElevator controller;
+	private IElevator controller;
 	private List<Floor> floors;
 	private boolean uiInitialized;
 
@@ -28,21 +28,22 @@ public class ElevatorManager {
 	public void addElevators() throws RemoteException {
 		elevators = new ArrayList<Elevator>();
 		for (int i = 0; i < controller.getElevatorNum(); i++) {
-			elevators.add(new Elevator(i));
-			ui.addElevator("Elevator " + i);
+			Elevator e = new Elevator(i);
+			elevators.add(e);
+			ui.addElevator(e);
 		}
-		
+
 	}
 
 	public void addElevator(Elevator elevator) throws RemoteException {
 		elevators.add(elevator);
 		elevator.setFloors(floors);
-	}	
+	}
 
 	public void updateElevators() {
 		if (ui == null || exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
 			return;
-		
+
 		try {
 			if (!uiInitialized) {
 				createFloorsList();
@@ -53,7 +54,7 @@ public class ElevatorManager {
 			for (Elevator e : elevators) {
 				updateElevator(e);
 			}
-			
+
 			ui.update(elevators);
 
 			exceptionsCatched = 0;
@@ -62,7 +63,7 @@ public class ElevatorManager {
 			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
 				ui.showError("Connection lost to the elevator. Please restart the application.");
 		}
-		
+
 	}
 
 	private void updateElevator(Elevator e) throws RemoteException {
@@ -75,8 +76,17 @@ public class ElevatorManager {
 		e.setNearestFloor(controller.getElevatorFloor(n));
 	}
 
-	public static void setTargetFloor(int elevator, int floorTarget) throws RemoteException {
-		controller.setTarget(elevator, floorTarget);
+	public void setTargetFloor(Elevator elevator, int targetFloor) {
+		try {
+			controller.setTarget(elevator.getElevatorNumber(), targetFloor);
+			int direction = elevator.getNearestFloor() < targetFloor ? IElevator.ELEVATOR_DIRECTION_UP
+					: IElevator.ELEVATOR_DIRECTION_DOWN;
+			controller.setCommittedDirection(elevator.getElevatorNumber(), direction);
+		} catch (RemoteException e) {
+			exceptionsCatched++;
+			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
+				ui.showError("Connection lost to the elevator. Please restart the application.");
+		}
 	}
 
 	private void createFloorsList() throws RemoteException {
