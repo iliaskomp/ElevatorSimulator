@@ -38,9 +38,28 @@ public class ElevatorManager {
 	}
 	
 	public void updateElevators() throws RemoteException {
+		Elevator selectedElevator = null;
+		String eString = ui.getSelectedElevator();
+		
 		for (Elevator e : elevators) {
 			updateElevator(e);
-		}		
+			if (e.getElevatorNumber() == eString.charAt(eString.length() - 1)) {
+				selectedElevator = e;
+				System.out.println("Selected Elevator");
+			}
+		}
+		
+		updateUiData(selectedElevator);
+
+	}
+	
+	private void updateUiData(Elevator e) {
+		ui.setPositionTextField(e.getPosition() + "");
+//		ui.setDirectionTextField(e.getDirection() + "");
+		ui.setSpeedTextField(e.getSpeed() + "");
+		ui.setPayloadTextField(e.getWeight() + "");
+		ui.setDoorStatusTextField(e.getDoorStatus() + "");
+		
 	}
 	
 	private void updateElevator(Elevator e) throws RemoteException{

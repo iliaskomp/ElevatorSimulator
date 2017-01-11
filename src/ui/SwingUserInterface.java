@@ -40,7 +40,7 @@ public class SwingUserInterface implements UserInterface {
 	}
 
 	public void show() {
-		frame = new JFrame("HelloWorldSwing");
+		frame = new JFrame("Elevator Management");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 
@@ -108,10 +108,10 @@ public class SwingUserInterface implements UserInterface {
             payloadTextField.setFocusable(false);
             dataListPanel.add(payloadTextField);
             
-            JLabel doorsLabel = new JLabel("Doors: ", JLabel.TRAILING);
-            dataListPanel.add(doorsLabel);
+            JLabel doorStatusLabel = new JLabel("Door Status: ", JLabel.TRAILING);
+            dataListPanel.add(doorStatusLabel);
             doorsTextField = new JTextField(5);
-            doorsLabel.setLabelFor(doorsTextField);
+            doorStatusLabel.setLabelFor(doorsTextField);
             doorsTextField.setFocusable(false);
             dataListPanel.add(doorsTextField);
 	 
@@ -135,7 +135,7 @@ public class SwingUserInterface implements UserInterface {
             labels.add(directionLabel);
             labels.add(speedLabel);
             labels.add(payloadLabel);
-            labels.add(doorsLabel);
+            labels.add(doorStatusLabel);
             labels.add(targetLabel);
             
             for (JLabel l : labels) {
@@ -162,33 +162,37 @@ public class SwingUserInterface implements UserInterface {
 	}
 	
 	// Getters/Setters
-	public void setPositionTextField(JTextField positionTextField) {
-		this.positionTextField = positionTextField;
+	public void setPositionTextField(String position) {
+		positionTextField.setText(position);
 	}
 
-	public void setDirectionTextField(JTextField directionTextField) {
-		this.directionTextField = directionTextField;
+	public void setDirectionTextField(String direction) {
+		directionTextField.setText(direction);
 	}
 
-	public void setSpeedTextField(JTextField speedTextField) {
-		this.speedTextField = speedTextField;
+	public void setSpeedTextField(String speed) {
+		speedTextField.setText(speed);
 	}
 
-	public void setPayloadTextField(JTextField payloadTextField) {
-		this.payloadTextField = payloadTextField;
+	public void setPayloadTextField(String payload) {
+		payloadTextField.setText(payload);
 	}
 
-	public void setDoorsTextField(JTextField doorsTextField) {
-		this.doorsTextField = doorsTextField;
+	public void setDoorStatusTextField(String doors) {
+		doorsTextField.setText(doors);
 	}
 
-	public void setTargetTextField(JTextField targetTextField) {
-		this.targetTextField = targetTextField;
+	public void setTargetTextField(String target) {
+		targetTextField.setText(target);
 	}
 	
 	
 	public JComboBox<String> getElevatorSelector() {
 		return elevatorSelector;
+	}
+	
+	public String getSelectedElevator() {
+		return elevatorSelector.getSelectedItem().toString();
 	}
 
 
