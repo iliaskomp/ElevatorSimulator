@@ -4,12 +4,10 @@ public class Floor {
 	private boolean upCall;
 	private boolean downCall;
 	private boolean stopRequest;
+	private int floor;
 	
-	public Floor(boolean upCall, boolean downCall, boolean stopRequest) {
-		super();
-		this.upCall = upCall;
-		this.downCall = downCall;
-		this.stopRequest = stopRequest;
+	public Floor(int floor) {
+		this.floor = floor;
 	}
 
 	public boolean isUpCall() {

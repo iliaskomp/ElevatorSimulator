@@ -1,34 +1,33 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import sqelevator.IElevator;
 
 public class Elevator {
 	private int position;
 	private int speed;
 	private int weight;
-	public int getWeight() {
-		return weight;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
 
 	private enum Direction {UP, DOWN, NONE};
 	private boolean doorStatus;
 	private int nearestFloor;
 	private List<Floor> floors;
-
-	public Elevator(int position, int speed, int weight, boolean doorStatus, int nearestFloor, List<Floor> floors) {
-		super();
-		this.position = position;
-		this.speed = speed;
-		this.weight = weight;
-		this.doorStatus = doorStatus;
-		this.nearestFloor = nearestFloor;
-		this.floors = floors;
+	
+	
+	public Elevator(int numberOfFloors) {
+		floors = new ArrayList<>();
+		for (int i = 0; i < numberOfFloors; i++) {
+			floors.add(new Floor(i));
+		}
 	}
-
+		
+	public void update(IElevator controller) {
+		
+	}
+	
+	
 	public int getPosition() {
 		return position;
 	}
@@ -69,6 +68,12 @@ public class Elevator {
 		this.floors = floors;
 	}
 	
+	public int getWeight() {
+		return weight;
+	}
 
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
 }
