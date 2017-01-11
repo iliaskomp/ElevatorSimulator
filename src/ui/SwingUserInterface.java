@@ -3,6 +3,10 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import controller.ElevatorManager;
 import model.Elevator;
 
 public class SwingUserInterface implements UserInterface {
@@ -27,9 +32,8 @@ public class SwingUserInterface implements UserInterface {
 	private JTextField targetTextField;
 	private JButton goTargetButton;
 	private JFrame frame;
-
 	private JComboBox<String> elevatorSelector;
-
+	
 	public void update(List<Elevator> elevators) {
 		Elevator selectedElevator = null;
 		String eString = getSelectedElevator();
@@ -60,7 +64,6 @@ public class SwingUserInterface implements UserInterface {
 		frame.setLayout(new BorderLayout());
 
 		elevatorSelector = new JComboBox<String>();
-	//	elevatorSelector.addItem("Elevator 1");
 		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
 
 		JPanel elevatorPanel = new JPanel();
@@ -89,9 +92,6 @@ public class SwingUserInterface implements UserInterface {
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
-		  //  String[] labels = {"Position: ", "Direction: ", "Speed: ", "Payload: ", "Doors: "};
-	      //  int numPairs = labels.length;
-
 	        //Create and populate the panel.
 	        JPanel dataListPanel = new JPanel(new SpringLayout());
 
@@ -144,7 +144,22 @@ public class SwingUserInterface implements UserInterface {
             goTargetButton = new JButton("GO");
             dataListPanel.add(goTargetButton);
 
-
+            goTargetButton.addActionListener(new ActionListener() {				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int targetFloor = Integer.parseInt(targetTextField.getText());
+					System.out.println(targetFloor);
+					try {
+						ElevatorManager.setTargetFloor(0, targetFloor);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
+			});
+            
+            // Create list of labels to change font etc.
             List<JLabel> labels = new ArrayList<>();
             labels.add(positionLabel);
             labels.add(directionLabel);
@@ -160,7 +175,7 @@ public class SwingUserInterface implements UserInterface {
 
 	        //Lay out the panel.
 	        SpringUtilities.makeCompactGrid(dataListPanel,
-	                                        7, 2, //rows, cols
+	                                        7, 2, 		   //rows, cols
 	                                        10, 10,        //initX, initY
 	                                        10, 10);       //xPad, yPad
 
@@ -216,6 +231,5 @@ public class SwingUserInterface implements UserInterface {
 			    "Error",
 			    JOptionPane.ERROR_MESSAGE);
 	}
-
 
 }

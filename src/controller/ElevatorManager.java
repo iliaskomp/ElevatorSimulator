@@ -7,13 +7,12 @@ import java.util.List;
 import model.Elevator;
 import model.Floor;
 import sqelevator.IElevator;
-import ui.SwingUserInterface;
 import ui.UserInterface;
 
 public class ElevatorManager {
 	private static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
-	private IElevator controller;
+	private static IElevator controller;
 	private List<Floor> floors;
 	private boolean uiInitialized;
 
@@ -76,8 +75,8 @@ public class ElevatorManager {
 		e.setNearestFloor(controller.getElevatorFloor(n));
 	}
 
-	public void setTargetFloor(int elevator, int floorTarget) {
-
+	public static void setTargetFloor(int elevator, int floorTarget) throws RemoteException {
+		controller.setTarget(elevator, floorTarget);
 	}
 
 	private void createFloorsList() throws RemoteException {
