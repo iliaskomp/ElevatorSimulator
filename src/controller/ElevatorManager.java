@@ -7,11 +7,15 @@ import java.util.List;
 import model.Elevator;
 import model.Floor;
 import sqelevator.IElevator;
+import ui.SwingUserInterface;
+import ui.UserInterface;
 
 public class ElevatorManager {
 	private List<Elevator> elevators;
 	private IElevator controller;
 	private List<Floor> floors;
+
+	private UserInterface ui;
 
 	public ElevatorManager(IElevator controller) throws RemoteException {
 		this.controller = controller;
@@ -26,7 +30,7 @@ public class ElevatorManager {
 	
 
 	public void addElevator(Elevator elevator) throws RemoteException {
-		elevators.add(elevator);
+		elevators.add(elevator);		
 		elevator.setFloors(floors);
 	}
 	
@@ -65,4 +69,13 @@ public class ElevatorManager {
 	public List<Elevator> getElevators() {
 		return elevators;
 	}
+	
+	public UserInterface getUi() {
+		return ui;
+	}
+
+	public void setUi(UserInterface ui) {
+		this.ui = ui;
+	}
+
 }

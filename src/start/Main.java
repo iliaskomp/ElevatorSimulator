@@ -17,9 +17,10 @@ public class Main {
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 		IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
 		ElevatorManager manager = new ElevatorManager(controller);
+     
 		Elevator e = new Elevator(0);
 		
-		manager.addElevator(e);
+		//manager.addElevator(e);
 		
 		 ui = new SwingUserInterface();
 		 javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -27,6 +28,8 @@ public class Main {
 	                ui.show();
 	            }
 	        });
+		 
+		 manager.setUi(ui);
 	}
 
 }
