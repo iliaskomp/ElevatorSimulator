@@ -42,7 +42,8 @@ public class SwingUserInterface implements UserInterface {
 	private boolean manualMode;
 	private Elevator selectedElevator;
 	private ElevatorManagerInterface elevatorManager;
-
+	private JPanel elevatorPanel;
+	
 	public void update(List<Elevator> elevators) {
 		for (Elevator e : elevators) {
 			if (e.getName().equals(getSelectedElevatorName())) {
@@ -50,17 +51,18 @@ public class SwingUserInterface implements UserInterface {
 			}
 		}
 		updateUiData(selectedElevator);
+		updateElevatorPanel(selectedElevator);
 	}
 
 	private void updateUiData(Elevator e) {
 		if (e != null ) {
 			setPositionTextField(e.getPosition() + "");
-//			ui.setDirectionTextField(e.getDirection() + "");
+//			ui.setDirectionTextField(e.getDirection() + "");			
 			setSpeedTextField(e.getSpeed() + "");
 			setPayloadTextField(e.getWeight() + "");
 			setDoorStatusTextField(e.getDoorStatus() + "");
 		}
-
+		
 	}
 
 	public void show() {
@@ -71,7 +73,7 @@ public class SwingUserInterface implements UserInterface {
 		elevatorSelector = new JComboBox<String>();
 		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
 
-		JPanel elevatorPanel = new ElevatorPanel();
+		elevatorPanel = new ElevatorPanel();
 		JPanel dataPanel = new JPanel();
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, elevatorPanel, dataPanel);
@@ -81,19 +83,21 @@ public class SwingUserInterface implements UserInterface {
 
 		frame.getContentPane().add(splitPane,BorderLayout.CENTER);
 
-		updateElevatorPanel(elevatorPanel);
+		//updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
 
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
-		frame.setVisible(true);
+		frame.setPreferredSize(new Dimension(1000, 500));
 		frame.pack();
+		frame.setVisible(true);
 
 	}
 
 
 
-	private void updateElevatorPanel(JPanel elevatorPanel) {
-
+	private void updateElevatorPanel(Elevator e) {	
+		((ElevatorPanel) elevatorPanel).setElevatorHeight(e.getPosition());
+		
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
@@ -101,7 +105,7 @@ public class SwingUserInterface implements UserInterface {
 	        JPanel dataListPanel = new JPanel(new SpringLayout());
 
 	        // Position
-            JLabel positionLabel = new JLabel("Position: ", JLabel.TRAILING);
+            JLabel positionLabel = new JLabel("Position (Feet): ", JLabel.TRAILING);
             dataListPanel.add(positionLabel);
             positionTextField = new JTextField(5);
             positionLabel.setLabelFor(positionTextField);
@@ -167,9 +171,6 @@ public class SwingUserInterface implements UserInterface {
             // Mode
             JLabel modeLabel = new JLabel("Mode: ", JLabel.TRAILING);
             dataListPanel.add(modeLabel);
-            payloadTextField = new JTextField(5);
-            payloadLabel.setLabelFor(payloadTextField);
-            payloadTextField.setFocusable(false);
 
             JRadioButton automaticButton = new JRadioButton("Automatic");
             JRadioButton manualButton = new JRadioButton("Manual");
@@ -183,6 +184,8 @@ public class SwingUserInterface implements UserInterface {
 				public void actionPerformed(ActionEvent e) {
 					System.out.println("Automatic mode activated");
 					manualMode = true;
+	            	goTargetButton.setEnabled(false);
+
 				}
 			});
             manualButton.addActionListener(new ActionListener() {
@@ -190,6 +193,8 @@ public class SwingUserInterface implements UserInterface {
 				public void actionPerformed(ActionEvent e) {
 					System.out.println("Manual mode activated");
 					manualMode = false;
+	            	goTargetButton.setEnabled(true);
+
 				}
 			});
 
