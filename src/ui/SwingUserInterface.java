@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -76,12 +77,13 @@ public class SwingUserInterface implements UserInterface {
 
 		frame.getContentPane().add(splitPane,BorderLayout.CENTER);
 
-		frame.pack();
-		frame.setVisible(true);
-
 
 		updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
+		
+		frame.setVisible(true);
+		frame.pack();
+
 
 	}
 
@@ -183,6 +185,8 @@ public class SwingUserInterface implements UserInterface {
 	        dataListPanel.setOpaque(true);  //content panes must be opaque
 
 	        dataPanel.add(dataListPanel);
+			frame.pack();
+
 	}
 
 	// Getters/Setters
