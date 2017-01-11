@@ -133,7 +133,7 @@ public class DummyElevator implements IElevator {
 	@Override
 	public int getElevatorWeight(int elevatorNumber) throws RemoteException {
 		checkElevatorNumber(elevatorNumber);
-		return 0;
+		return 10;
 	}
 
 	@Override
