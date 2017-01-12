@@ -29,6 +29,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		elevators = new ArrayList<Elevator>();
 		for (int i = 0; i < controller.getElevatorNum(); i++) {
 			Elevator e = new Elevator(i);
+			e.setName("Elevator "+i);
 			elevators.add(e);
 			ui.addElevator(e);
 		}
