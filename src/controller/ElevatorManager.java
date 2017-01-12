@@ -33,7 +33,6 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			elevators.add(e);
 			ui.addElevator(e);
 		}
-
 	}
 
 	public void addElevator(Elevator elevator) throws RemoteException {
@@ -64,7 +63,6 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
 				ui.showError("Connection lost to the elevator. Please restart the application.");
 		}
-
 	}
 
 	private void updateElevator(Elevator e) throws RemoteException {
@@ -101,6 +99,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	public int getNumberOfFloors() throws RemoteException {
 		return controller.getFloorNum();
 	}
+	
 
 	public List<Elevator> getElevators() {
 		return elevators;
@@ -113,6 +112,10 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	public void setUi(UserInterface ui) {
 		uiInitialized = false;
 		this.ui = ui;
+	}
+	
+	public boolean IsUiInitialized() {
+		return uiInitialized;
 	}
 
 }

@@ -28,8 +28,6 @@ public class ElevatorPanel extends JPanel{
 		y = 0;				
 	}
 	
-
-
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	g.fillRect(RECT_X, PANEL_HEIGHT - y, RECT_WIDTH + 1, RECT_HEIGHT);
