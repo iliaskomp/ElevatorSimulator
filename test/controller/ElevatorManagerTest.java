@@ -13,12 +13,11 @@ import model.Elevator;
 import sqelevator.IElevator;
 import test.DummyElevator;
 import ui.SwingUserInterface;
-import ui.UserInterface;
 
 public class ElevatorManagerTest {
 	ElevatorManager manager;
 	IElevator controller;
-	private UserInterface ui;
+//	private UserInterface ui;
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
@@ -29,49 +28,31 @@ public class ElevatorManagerTest {
 		manager = new ElevatorManager(controller);
 		
 	}
-	
-	
+		
 	@Test
-	public void testUiInitializedFalseAtStart() {
-		assertFalse(manager.IsUiInitialized());
+	public void testElevatorsSize() throws RemoteException {		
+		manager.updateElevators();		
+		assertEquals(controller.getElevatorNum(), manager.getElevators().size());
 	}
 	
 	@Test
-	public void testUiNotNull() {
-		assertNotEquals(null, ui);
+	public void testFloorsSize() throws RemoteException {		
+		manager.updateElevators();		
+		assertEquals(controller.getFloorNum(), manager.getFloors().size());
 	}
 	
-//	@Test
-//	public void testElevatorsSize() throws RemoteException {		
-//		manager.addElevators();		
-//		assertEquals(controller.getElevatorNum(), manager.getElevators().size());
-//	}
-//	
-//	@Test
-//	public void testAddElevatorWithoutInitElevatorsList() throws RemoteException {
-//		Elevator e = new Elevator(0);
-//		
-//		thrown.expect(NullPointerException.class);
-//		manager.addElevator(e);
-//
-//	} 
-//	
-//	@Test
-//	public void testAddElevator() throws RemoteException {
-//		manager.addElevators();		
-//		assertEquals(controller.getElevatorNum(), manager.getElevators().size());
-//
-//		Elevator e = new Elevator(0);
-//		manager.addElevator(e);
-//		assertEquals(controller.getElevatorNum() + 1, manager.getElevators().size());
-//
-//	} 
-//	
-//	@Test
-//	public void testCreateFloorsListSize() {
-//
-//	}
+	@Test
+	public void testSetTargetToInvalidFloor() {
+		thrown.expect(NullPointerException.class);
+		manager.setTargetFloor(manager.getElevators().get(0), manager.getFloors().size() + 1);
+		
+	}
 	
-
+	@Test
+	public void testExceptionThrownCallingInvalidElevator() {
+		
+	}
+	
+	// throw 5 exceptions
 		
 }
