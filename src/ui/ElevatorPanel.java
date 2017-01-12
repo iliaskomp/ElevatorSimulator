@@ -27,15 +27,12 @@ public class ElevatorPanel extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		y = 0;
-		
-		
+		y = 0;				
 	}
 	
     public void paintComponent(Graphics g) {  
-    	  super.paintComponent(g);
-    	g.fillRect(RECT_X, PANEL_HEIGHT - y, RECT_WIDTH + 1, RECT_HEIGHT);    	
-    
+    	super.paintComponent(g);
+    	g.fillRect(RECT_X, PANEL_HEIGHT - y, RECT_WIDTH + 1, RECT_HEIGHT);    	    
     	g.drawLine(RECT_X, 0, RECT_X, PANEL_HEIGHT);
     	g.drawLine(RECT_X + RECT_WIDTH, 0, RECT_X + RECT_WIDTH, PANEL_HEIGHT);
 
