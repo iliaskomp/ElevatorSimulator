@@ -6,11 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -25,8 +22,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import controller.ElevatorManager;
+import controller.ElevatorManagerInterface;
 import model.Elevator;
+import model.Floor;
 
 public class SwingUserInterface implements UserInterface {
 	private JTextField positionTextField;
@@ -38,32 +36,30 @@ public class SwingUserInterface implements UserInterface {
 	private JButton goTargetButton;
 	private JFrame frame;
 	private JComboBox<String> elevatorSelector;
-	private boolean manualMode;	
-	private JPanel elevatorPanel;
-	
-	public void update(List<Elevator> elevators) {
-		Elevator selectedElevator = null;
-		String eString = getSelectedElevator();
-		
-		for (Elevator e : elevators) {
-			if (e.getElevatorNumber() == Integer.parseInt(eString.substring(eString.length() - 1))) {
-				selectedElevator = e;
-			}			
-		}
+	private boolean manualMode;
+	private Elevator selectedElevator;
+	private ElevatorManagerInterface elevatorManager;
+	private ElevatorPanel elevatorPanel;
 
+	public void update(List<Elevator> elevators, List<Floor> floors) {
+		for (Elevator e : elevators) {
+			if (e.getName().equals(getSelectedElevatorName())) {
+				selectedElevator = e;
+			}
+		}
 		updateUiData(selectedElevator);
-		updateElevatorPanel(selectedElevator);
+		elevatorPanel.update(selectedElevator, floors);
 	}
-	
+
 	private void updateUiData(Elevator e) {
 		if (e != null ) {
 			setPositionTextField(e.getPosition() + "");
-//			ui.setDirectionTextField(e.getDirection() + "");			
+//			ui.setDirectionTextField(e.getDirection() + "");
 			setSpeedTextField(e.getSpeed() + "");
 			setPayloadTextField(e.getWeight() + "");
 			setDoorStatusTextField(e.getDoorStatus() + "");
 		}
-		
+
 	}
 
 	public void show() {
@@ -86,19 +82,12 @@ public class SwingUserInterface implements UserInterface {
 
 		//updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
-		
+
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
 		frame.setPreferredSize(new Dimension(1000, 500));
 		frame.pack();
 		frame.setVisible(true);
 
-	}
-
-
-
-	private void updateElevatorPanel(Elevator e) {	
-		((ElevatorPanel) elevatorPanel).setElevatorHeight(e.getPosition());
-		
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
@@ -113,7 +102,7 @@ public class SwingUserInterface implements UserInterface {
             positionTextField.setFocusable(false);
             dataListPanel.add(positionTextField);
             dataListPanel.add(new JLabel(""));
-            
+
             // Direction
             JLabel directionLabel = new JLabel("Direction: ", JLabel.TRAILING);
             dataListPanel.add(directionLabel);
@@ -160,15 +149,12 @@ public class SwingUserInterface implements UserInterface {
 
             goTargetButton = new JButton("GO");
             dataListPanel.add(goTargetButton);
-            goTargetButton.addActionListener(new ActionListener() {				
+            goTargetButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int targetFloor = Integer.parseInt(targetTextField.getText());
-					try {
-						ElevatorManager.setTargetFloor(0, targetFloor);
-					} catch (RemoteException e1) {
-						e1.printStackTrace();
-					}					
+					elevatorManager.setTargetFloor(selectedElevator, targetFloor);
+
 				}
 			});
 
@@ -182,19 +168,19 @@ public class SwingUserInterface implements UserInterface {
             group.add(automaticButton);
             group.add(manualButton);
             dataListPanel.add(automaticButton);
-            dataListPanel.add(manualButton);                                            
-            automaticButton.addActionListener(new ActionListener() {				
+            dataListPanel.add(manualButton);
+            automaticButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {				
+				public void actionPerformed(ActionEvent e) {
 					System.out.println("Automatic mode activated");
 					manualMode = true;
 	            	goTargetButton.setEnabled(false);
 
 				}
 			});
-            manualButton.addActionListener(new ActionListener() {			
+            manualButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {				
+				public void actionPerformed(ActionEvent e) {
 					System.out.println("Manual mode activated");
 					manualMode = false;
 	            	goTargetButton.setEnabled(true);
@@ -202,7 +188,7 @@ public class SwingUserInterface implements UserInterface {
 				}
 			});
 
-            
+
 	        //Lay out the panel.
 	        SpringUtilities.makeCompactGrid(dataListPanel,
 	                                        7, 3, 		   //rows, cols
@@ -224,10 +210,10 @@ public class SwingUserInterface implements UserInterface {
 	        }
 	    }
 	}
-	
+
 	@Override
-	public void addElevator(String elevatorName) {
-		elevatorSelector.addItem(elevatorName);
+	public void addElevator(Elevator elevator) {
+		elevatorSelector.addItem(elevator.getName());
 	}
 
 	@Override
@@ -237,7 +223,7 @@ public class SwingUserInterface implements UserInterface {
 			    "Error",
 			    JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	// Getters/Setters
 	public void setPositionTextField(String position) {
 		positionTextField.setText(position);
@@ -263,21 +249,21 @@ public class SwingUserInterface implements UserInterface {
 		targetTextField.setText(target);
 	}
 
-
-	public JComboBox<String> getElevatorSelector() {
-		return elevatorSelector;
-	}
-	
-	public String getSelectedElevator() {
+	public String getSelectedElevatorName() {
 		return elevatorSelector.getSelectedItem().toString();
 	}
-	
+
 	public boolean isManualMode() {
 		return manualMode;
 	}
 
 	public void setManualMode(boolean manualMode) {
 		this.manualMode = manualMode;
+	}
+
+	public void setElevatorManager(ElevatorManagerInterface elevatorManager)
+	{
+		this.elevatorManager = elevatorManager;
 	}
 
 }
