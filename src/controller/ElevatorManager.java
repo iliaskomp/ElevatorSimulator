@@ -55,7 +55,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 				updateElevator(e);
 			}
 
-			ui.update(elevators);
+			ui.update(elevators, floors);
 
 			exceptionsCatched = 0;
 		} catch (RemoteException e) {
@@ -97,7 +97,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	}
 
 	// Getters/Setters
-	public static int getNumberOfFloors() throws RemoteException {
+	public int getNumberOfFloors() throws RemoteException {
 		return controller.getFloorNum();
 	}
 

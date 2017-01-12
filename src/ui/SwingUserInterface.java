@@ -6,11 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -25,9 +22,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import controller.ElevatorManager;
 import controller.ElevatorManagerInterface;
 import model.Elevator;
+import model.Floor;
 
 public class SwingUserInterface implements UserInterface {
 	private JTextField positionTextField;
@@ -42,27 +39,27 @@ public class SwingUserInterface implements UserInterface {
 	private boolean manualMode;
 	private Elevator selectedElevator;
 	private ElevatorManagerInterface elevatorManager;
-	private JPanel elevatorPanel;
-	
-	public void update(List<Elevator> elevators) {
+	private ElevatorPanel elevatorPanel;
+
+	public void update(List<Elevator> elevators, List<Floor> floors) {
 		for (Elevator e : elevators) {
 			if (e.getName().equals(getSelectedElevatorName())) {
 				selectedElevator = e;
 			}
 		}
 		updateUiData(selectedElevator);
-		updateElevatorPanel(selectedElevator);
+		elevatorPanel.update(selectedElevator, floors);
 	}
 
 	private void updateUiData(Elevator e) {
 		if (e != null ) {
 			setPositionTextField(e.getPosition() + "");
-//			ui.setDirectionTextField(e.getDirection() + "");			
+//			ui.setDirectionTextField(e.getDirection() + "");
 			setSpeedTextField(e.getSpeed() + "");
 			setPayloadTextField(e.getWeight() + "");
 			setDoorStatusTextField(e.getDoorStatus() + "");
 		}
-		
+
 	}
 
 	public void show() {
@@ -91,13 +88,6 @@ public class SwingUserInterface implements UserInterface {
 		frame.pack();
 		frame.setVisible(true);
 
-	}
-
-
-
-	private void updateElevatorPanel(Elevator e) {	
-		((ElevatorPanel) elevatorPanel).setElevatorHeight(e.getPosition());
-		
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
