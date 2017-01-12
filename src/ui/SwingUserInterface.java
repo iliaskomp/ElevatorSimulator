@@ -27,7 +27,7 @@ import model.Elevator;
 import model.Floor;
 import sqelevator.IElevator;
 
-public class SwingUserInterface implements UserInterface {
+public class SwingUserInterface implements UIInterface {
 	private JTextField positionTextField;
 	private JTextField directionTextField;
 	private JTextField speedTextField;
@@ -43,18 +43,18 @@ public class SwingUserInterface implements UserInterface {
 	private ElevatorPanel elevatorPanel;
 	private static final int TEXTFIELD_LENGTH = 8;
 
-	public void update(List<Elevator> elevators, List<Floor> floors) {
-		for (Elevator e : elevators) {
+	public void update() {
+		for (Elevator e : elevatorManager.getElevators()) {
 			if (e.getName().equals(getSelectedElevatorName())) {
 				selectedElevator = e;
 			}
 		}
 		updateUiData(selectedElevator);
-		elevatorPanel.update(selectedElevator, floors);
+		elevatorPanel.update(selectedElevator, elevatorManager.getFloors());
 	}
 
 	private void updateUiData(Elevator e) {
-		if (e != null ) {
+		if (e != null) {
 			setPositionTextField(e.getPosition() + "");
 			setDirectionTextField(e.getCommitedDirection());
 			setSpeedTextField(e.getSpeed() + "");
@@ -70,7 +70,7 @@ public class SwingUserInterface implements UserInterface {
 		frame.setLayout(new BorderLayout());
 
 		elevatorSelector = new JComboBox<String>();
-		frame.getContentPane().add(elevatorSelector,BorderLayout.PAGE_START);
+		frame.getContentPane().add(elevatorSelector, BorderLayout.PAGE_START);
 
 		elevatorPanel = new ElevatorPanel();
 		JPanel dataPanel = new JPanel();
@@ -80,202 +80,183 @@ public class SwingUserInterface implements UserInterface {
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
 
-		frame.getContentPane().add(splitPane,BorderLayout.CENTER);
+		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 
-		//updateElevatorPanel(elevatorPanel);
 		updateDataPanel(dataPanel);
 
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
-		frame.setPreferredSize(new Dimension(1000, 500));
+		frame.setPreferredSize(new Dimension(1000, 750));
 		frame.pack();
 		frame.setVisible(true);
 
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
-	        //Create and populate the panel.
-	        JPanel dataListPanel = new JPanel(new SpringLayout());
+		// Create and populate the panel.
+		JPanel dataListPanel = new JPanel(new SpringLayout());
 
-	        // Position
-            JLabel positionLabel = new JLabel("Position (Feet): ", JLabel.TRAILING);
-            dataListPanel.add(positionLabel);
-            positionTextField = new JTextField(TEXTFIELD_LENGTH);
-            positionLabel.setLabelFor(positionTextField);
-            positionTextField.setFocusable(false);
-            dataListPanel.add(positionTextField);
-            dataListPanel.add(new JLabel(""));
+		// Position
+		JLabel positionLabel = new JLabel("Position (Feet): ", JLabel.TRAILING);
+		dataListPanel.add(positionLabel);
+		positionTextField = new JTextField(TEXTFIELD_LENGTH);
+		positionLabel.setLabelFor(positionTextField);
+		positionTextField.setFocusable(false);
+		dataListPanel.add(positionTextField);
+		dataListPanel.add(new JLabel(""));
 
-            // Direction
-            JLabel directionLabel = new JLabel("Direction: ", JLabel.TRAILING);
-            dataListPanel.add(directionLabel);
-            directionTextField = new JTextField(TEXTFIELD_LENGTH);
-            directionLabel.setLabelFor(directionTextField);
-            directionTextField.setFocusable(false);
-            dataListPanel.add(directionTextField);
-            dataListPanel.add(new JLabel(""));
+		// Direction
+		JLabel directionLabel = new JLabel("Direction: ", JLabel.TRAILING);
+		dataListPanel.add(directionLabel);
+		directionTextField = new JTextField(TEXTFIELD_LENGTH);
+		directionLabel.setLabelFor(directionTextField);
+		directionTextField.setFocusable(false);
+		dataListPanel.add(directionTextField);
+		dataListPanel.add(new JLabel(""));
 
-            // Speed
-            JLabel speedLabel = new JLabel("Speed: ", JLabel.TRAILING);
-            dataListPanel.add(speedLabel);
-            speedTextField = new JTextField(TEXTFIELD_LENGTH);
-            speedLabel.setLabelFor(speedTextField);
-            speedTextField.setFocusable(false);
-            dataListPanel.add(speedTextField);
-            dataListPanel.add(new JLabel(""));
+		// Speed
+		JLabel speedLabel = new JLabel("Speed: ", JLabel.TRAILING);
+		dataListPanel.add(speedLabel);
+		speedTextField = new JTextField(TEXTFIELD_LENGTH);
+		speedLabel.setLabelFor(speedTextField);
+		speedTextField.setFocusable(false);
+		dataListPanel.add(speedTextField);
+		dataListPanel.add(new JLabel(""));
 
-            // Payload
-            JLabel payloadLabel = new JLabel("Payload: ", JLabel.TRAILING);
-            dataListPanel.add(payloadLabel);
-            payloadTextField = new JTextField(TEXTFIELD_LENGTH);
-            payloadLabel.setLabelFor(payloadTextField);
-            payloadTextField.setFocusable(false);
-            dataListPanel.add(payloadTextField);
-            dataListPanel.add(new JLabel(""));
+		// Payload
+		JLabel payloadLabel = new JLabel("Payload: ", JLabel.TRAILING);
+		dataListPanel.add(payloadLabel);
+		payloadTextField = new JTextField(TEXTFIELD_LENGTH);
+		payloadLabel.setLabelFor(payloadTextField);
+		payloadTextField.setFocusable(false);
+		dataListPanel.add(payloadTextField);
+		dataListPanel.add(new JLabel(""));
 
-            // Door Status
-            JLabel doorStatusLabel = new JLabel("Door Status: ", JLabel.TRAILING);
-            dataListPanel.add(doorStatusLabel);
-            doorsTextField = new JTextField(TEXTFIELD_LENGTH);
-            doorStatusLabel.setLabelFor(doorsTextField);
-            doorsTextField.setFocusable(false);
-            dataListPanel.add(doorsTextField);
-            dataListPanel.add(new JLabel(""));
+		// Door Status
+		JLabel doorStatusLabel = new JLabel("Door Status: ", JLabel.TRAILING);
+		dataListPanel.add(doorStatusLabel);
+		doorsTextField = new JTextField(TEXTFIELD_LENGTH);
+		doorStatusLabel.setLabelFor(doorsTextField);
+		doorsTextField.setFocusable(false);
+		dataListPanel.add(doorsTextField);
+		dataListPanel.add(new JLabel(""));
 
-            // Target
-            JLabel targetLabel = new JLabel("Target Floor: ", JLabel.TRAILING);
-            dataListPanel.add(targetLabel);
-            targetTextField = new JTextField(TEXTFIELD_LENGTH);
-            targetLabel.setLabelFor(targetTextField);
-            dataListPanel.add(targetTextField);
-            targetTextField.setBackground(new Color(0, 255, 0));
+		// Target
+		JLabel targetLabel = new JLabel("Target Floor: ", JLabel.TRAILING);
+		dataListPanel.add(targetLabel);
+		targetTextField = new JTextField(TEXTFIELD_LENGTH);
+		targetLabel.setLabelFor(targetTextField);
+		dataListPanel.add(targetTextField);
+		targetTextField.setBackground(new Color(0, 255, 0));
 
-            goTargetButton = new JButton("GO");
-            dataListPanel.add(goTargetButton);
-            goTargetButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int targetFloor = Integer.parseInt(targetTextField.getText());
-					elevatorManager.setTargetFloor(selectedElevator, targetFloor);
+		goTargetButton = new JButton("GO");
+		dataListPanel.add(goTargetButton);
+		goTargetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int targetFloor = Integer.parseInt(targetTextField.getText());
+				elevatorManager.setTargetFloor(selectedElevator, targetFloor);
 
-				}
-			});
+			}
+		});
 
-            // Mode
-            JLabel modeLabel = new JLabel("Mode: ", JLabel.TRAILING);
-            dataListPanel.add(modeLabel);
+		// Mode
+		JLabel modeLabel = new JLabel("Mode: ", JLabel.TRAILING);
+		dataListPanel.add(modeLabel);
 
-            JRadioButton automaticButton = new JRadioButton("Automatic");
-            JRadioButton manualButton = new JRadioButton("Manual");
-            ButtonGroup group = new ButtonGroup();
-            group.add(automaticButton);
-            group.add(manualButton);
-            dataListPanel.add(automaticButton);
-            dataListPanel.add(manualButton);
-            automaticButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					System.out.println("Automatic mode activated");
-					manualMode = true;
-	            	goTargetButton.setEnabled(false);
+		JRadioButton automaticButton = new JRadioButton("Automatic");
+		JRadioButton manualButton = new JRadioButton("Manual");
+		ButtonGroup group = new ButtonGroup();
+		group.add(automaticButton);
+		group.add(manualButton);
+		dataListPanel.add(automaticButton);
+		dataListPanel.add(manualButton);
+		automaticButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Automatic mode activated");
+				manualMode = true;
+				goTargetButton.setEnabled(false);
 
-				}
-			});
-            manualButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					System.out.println("Manual mode activated");
-					manualMode = false;
-	            	goTargetButton.setEnabled(true);
+			}
+		});
+		manualButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Manual mode activated");
+				manualMode = false;
+				goTargetButton.setEnabled(true);
 
-				}
-			});
+			}
+		});
 
+		// Lay out the panel.
+		SpringUtilities.makeCompactGrid(dataListPanel, 7, 3, // rows, cols
+				10, 10, // initX, initY
+				10, 10); // xPad, yPad
 
-	        //Lay out the panel.
-	        SpringUtilities.makeCompactGrid(dataListPanel,
-	                                        7, 3, 		   //rows, cols
-	                                        10, 10,        //initX, initY
-	                                        10, 10);       //xPad, yPad
+		// Set up the content pane.
+		dataListPanel.setOpaque(true); // content panes must be opaque
 
-	        //Set up the content pane.
-	        dataListPanel.setOpaque(true);  //content panes must be opaque
-
-	        dataPanel.add(dataListPanel);
+		dataPanel.add(dataListPanel);
 
 	}
-	public static void changeFont ( Component component, Font font )
-	{
-	    component.setFont(font);
-	    if ( component instanceof Container ) {
-	        for ( Component child : ((Container)component).getComponents()) {
-	            changeFont (child, font);
-	        }
-	    }
-	}
 
-	@Override
-	public void addElevator(Elevator elevator) {
-		elevatorSelector.addItem(elevator.getName());
+	public static void changeFont(Component component, Font font) {
+		component.setFont(font);
+		if (component instanceof Container) {
+			for (Component child : ((Container) component).getComponents()) {
+				changeFont(child, font);
+			}
+		}
 	}
 
 	@Override
 	public void showError(String message) {
-		JOptionPane.showMessageDialog(frame,
-			    message,
-			    "Error",
-			    JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	// Getters/Setters
-	public void setPositionTextField(String position) {
+	private void setPositionTextField(String position) {
 		positionTextField.setText(position);
 	}
 
-	public void setDirectionTextField(int commitedDirection) {
+	private void setDirectionTextField(int commitedDirection) {
 		String direction = "Invalid";
-		switch(commitedDirection)
-		{
+		switch (commitedDirection) {
 		case IElevator.ELEVATOR_DIRECTION_DOWN:
-			direction = "Down"; break;
+			direction = "Down";
+			break;
 		case IElevator.ELEVATOR_DIRECTION_UP:
-			direction = "Up"; break;
+			direction = "Up";
+			break;
 		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
-			direction = "Uncommitted"; break;
+			direction = "Uncommitted";
+			break;
 		}
 		directionTextField.setText(direction);
 	}
 
-	public void setSpeedTextField(String speed) {
+	private void setSpeedTextField(String speed) {
 		speedTextField.setText(speed);
 	}
 
-	public void setPayloadTextField(String payload) {
+	private void setPayloadTextField(String payload) {
 		payloadTextField.setText(payload);
 	}
 
-	public void setDoorStatusTextField(String doors) {
+	private void setDoorStatusTextField(String doors) {
 		doorsTextField.setText(doors);
 	}
 
-	public void setTargetTextField(String target) {
-		targetTextField.setText(target);
-	}
-
-	public String getSelectedElevatorName() {
+	private String getSelectedElevatorName() {
 		return elevatorSelector.getSelectedItem().toString();
 	}
 
-	public boolean isManualMode() {
-		return manualMode;
-	}
-
-	public void setManualMode(boolean manualMode) {
-		this.manualMode = manualMode;
-	}
-
-	public void setElevatorManager(ElevatorManagerInterface elevatorManager)
-	{
+	public void setElevatorManager(ElevatorManagerInterface elevatorManager) {
 		this.elevatorManager = elevatorManager;
+		for (Elevator elevator : elevatorManager.getElevators()) {
+			elevatorSelector.addItem(elevator.getName());
+		}
 	}
 
 }
