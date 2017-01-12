@@ -22,13 +22,14 @@ public class DummyElevator implements IElevator {
 	private static final float EPSILON_DISTANCE = (float) ((ACCEL / 2.0f)
 			* Math.pow((1000 / (float) TICK) / 1000.0f, 2));
 	private static final float EPSILON = 0.001f;
-	private int acceleration, target;
+	private int acceleration, target, direction;
 	private float position, speed;
 	private long time;
 
 	public DummyElevator() {
 		acceleration = target = 0;
 		position = speed = 0;
+		direction = ELEVATOR_DIRECTION_UNCOMMITTED;
 		time = System.currentTimeMillis();
 	}
 
@@ -80,6 +81,7 @@ public class DummyElevator implements IElevator {
 			position = target * FLOOR_HEIGHT;
 			speed = 0;
 			acceleration = 0;
+			direction = ELEVATOR_DIRECTION_UNCOMMITTED;
 		}
 		time = newTime;
 	}
@@ -87,7 +89,7 @@ public class DummyElevator implements IElevator {
 	@Override
 	public int getCommittedDirection(int elevatorNumber) throws RemoteException {
 		checkElevatorNumber(elevatorNumber);
-		return ELEVATOR_DIRECTION_UNCOMMITTED;
+		return direction;
 	}
 
 	@Override
@@ -185,7 +187,8 @@ public class DummyElevator implements IElevator {
 
 	@Override
 	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
-		throw new RemoteException("Not implemented.");
+		checkElevatorNumber(elevatorNumber);
+		this.direction = direction;
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.List;
 import model.Elevator;
 import model.Floor;
 import sqelevator.IElevator;
-import ui.UserInterface;
+import ui.UIInterface;
 
 public class ElevatorManager implements ElevatorManagerInterface {
 	private static final int MAX_REMOTE_EXCEPTIONS = 5;
@@ -15,10 +15,9 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	private IElevator controller;
 	private List<Floor> floors;
 	//introduced it to handle remote exceptions only in the update method, and not in the setUI
-	private boolean uiInitialized;
 	private boolean listsInitialized;
 
-	private UserInterface ui;
+	private UIInterface ui;
 	private int exceptionsCatched;
 
 	public ElevatorManager(IElevator controller) {
@@ -35,14 +34,6 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			elevators.add(e);
 		}
 	}
-	
-	private void addElevatorsToUI()
-	{
-		for(Elevator e: elevators)
-		{
-			ui.addElevator(e);
-		}
-	}
 
 	public void updateElevators() {
 		if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
@@ -52,6 +43,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			{
 				createFloorsList();
 				addElevators();
+				listsInitialized = true;
 			}
 
 			for (Elevator e : elevators) {
@@ -59,13 +51,6 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			}
 
 			exceptionsCatched = 0;
-
-			if(ui==null) return;
-			if (!uiInitialized) {
-				addElevatorsToUI();
-				uiInitialized = true;
-			}
-			ui.update(elevators, floors);
 		} catch (RemoteException e) {
 			exceptionsCatched++;
 			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
@@ -105,13 +90,13 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	}
 
 	// Getters/Setters
-	public void setUi(UserInterface ui) {
-		uiInitialized = false;
-		this.ui = ui;
+
+	public List<Elevator> getElevators() {
+		return elevators;
 	}
-	
-	public boolean IsUiInitialized() {
-		return uiInitialized;
+
+	public List<Floor> getFloors() {
+		return floors;
 	}
 
 }
