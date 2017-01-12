@@ -35,7 +35,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			elevators.add(e);
 		}
 	}
-
+	
 	private void addElevatorsToUI()
 	{
 		for(Elevator e: elevators)
@@ -105,19 +105,6 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	}
 
 	// Getters/Setters
-	public int getNumberOfFloors() throws RemoteException {
-		return controller.getFloorNum();
-	}
-	
-
-	public List<Elevator> getElevators() {
-		return elevators;
-	}
-
-	public UserInterface getUi() {
-		return ui;
-	}
-
 	public void setUi(UserInterface ui) {
 		uiInitialized = false;
 		this.ui = ui;
