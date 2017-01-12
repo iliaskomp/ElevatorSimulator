@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import sqelevator.IElevator;
+
 public class Elevator {
 	private int elevatorNumber;
 	private int position; // position in feet
@@ -11,6 +13,7 @@ public class Elevator {
 	private int doorStatus;
 	private boolean manualMode;
 	private String name;
+	private int commitedDirection;
 
 	private List<Floor> floors;
 
@@ -95,6 +98,18 @@ public class Elevator {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+
+	public int getCommitedDirection() {
+		return commitedDirection;
+	}
+
+
+
+	public void setCommitedDirection(int commitedDirection) {
+		this.commitedDirection = commitedDirection;
 	}
 
 }

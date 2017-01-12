@@ -25,6 +25,7 @@ import javax.swing.SpringLayout;
 import controller.ElevatorManagerInterface;
 import model.Elevator;
 import model.Floor;
+import sqelevator.IElevator;
 
 public class SwingUserInterface implements UserInterface {
 	private JTextField positionTextField;
@@ -40,6 +41,7 @@ public class SwingUserInterface implements UserInterface {
 	private Elevator selectedElevator;
 	private ElevatorManagerInterface elevatorManager;
 	private ElevatorPanel elevatorPanel;
+	private static final int TEXTFIELD_LENGTH = 8;
 
 	public void update(List<Elevator> elevators, List<Floor> floors) {
 		for (Elevator e : elevators) {
@@ -54,7 +56,7 @@ public class SwingUserInterface implements UserInterface {
 	private void updateUiData(Elevator e) {
 		if (e != null ) {
 			setPositionTextField(e.getPosition() + "");
-//			ui.setDirectionTextField(e.getDirection() + "");
+			setDirectionTextField(e.getCommitedDirection());
 			setSpeedTextField(e.getSpeed() + "");
 			setPayloadTextField(e.getWeight() + "");
 			setDoorStatusTextField(e.getDoorStatus() + "");
@@ -97,7 +99,7 @@ public class SwingUserInterface implements UserInterface {
 	        // Position
             JLabel positionLabel = new JLabel("Position (Feet): ", JLabel.TRAILING);
             dataListPanel.add(positionLabel);
-            positionTextField = new JTextField(5);
+            positionTextField = new JTextField(TEXTFIELD_LENGTH);
             positionLabel.setLabelFor(positionTextField);
             positionTextField.setFocusable(false);
             dataListPanel.add(positionTextField);
@@ -106,7 +108,7 @@ public class SwingUserInterface implements UserInterface {
             // Direction
             JLabel directionLabel = new JLabel("Direction: ", JLabel.TRAILING);
             dataListPanel.add(directionLabel);
-            directionTextField = new JTextField(5);
+            directionTextField = new JTextField(TEXTFIELD_LENGTH);
             directionLabel.setLabelFor(directionTextField);
             directionTextField.setFocusable(false);
             dataListPanel.add(directionTextField);
@@ -115,7 +117,7 @@ public class SwingUserInterface implements UserInterface {
             // Speed
             JLabel speedLabel = new JLabel("Speed: ", JLabel.TRAILING);
             dataListPanel.add(speedLabel);
-            speedTextField = new JTextField(5);
+            speedTextField = new JTextField(TEXTFIELD_LENGTH);
             speedLabel.setLabelFor(speedTextField);
             speedTextField.setFocusable(false);
             dataListPanel.add(speedTextField);
@@ -124,7 +126,7 @@ public class SwingUserInterface implements UserInterface {
             // Payload
             JLabel payloadLabel = new JLabel("Payload: ", JLabel.TRAILING);
             dataListPanel.add(payloadLabel);
-            payloadTextField = new JTextField(5);
+            payloadTextField = new JTextField(TEXTFIELD_LENGTH);
             payloadLabel.setLabelFor(payloadTextField);
             payloadTextField.setFocusable(false);
             dataListPanel.add(payloadTextField);
@@ -133,7 +135,7 @@ public class SwingUserInterface implements UserInterface {
             // Door Status
             JLabel doorStatusLabel = new JLabel("Door Status: ", JLabel.TRAILING);
             dataListPanel.add(doorStatusLabel);
-            doorsTextField = new JTextField(5);
+            doorsTextField = new JTextField(TEXTFIELD_LENGTH);
             doorStatusLabel.setLabelFor(doorsTextField);
             doorsTextField.setFocusable(false);
             dataListPanel.add(doorsTextField);
@@ -142,7 +144,7 @@ public class SwingUserInterface implements UserInterface {
             // Target
             JLabel targetLabel = new JLabel("Target Floor: ", JLabel.TRAILING);
             dataListPanel.add(targetLabel);
-            targetTextField = new JTextField(5);
+            targetTextField = new JTextField(TEXTFIELD_LENGTH);
             targetLabel.setLabelFor(targetTextField);
             dataListPanel.add(targetTextField);
             targetTextField.setBackground(new Color(0, 255, 0));
@@ -229,7 +231,17 @@ public class SwingUserInterface implements UserInterface {
 		positionTextField.setText(position);
 	}
 
-	public void setDirectionTextField(String direction) {
+	public void setDirectionTextField(int commitedDirection) {
+		String direction = "Invalid";
+		switch(commitedDirection)
+		{
+		case IElevator.ELEVATOR_DIRECTION_DOWN:
+			direction = "Down"; break;
+		case IElevator.ELEVATOR_DIRECTION_UP:
+			direction = "Up"; break;
+		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+			direction = "Uncommitted"; break;
+		}
 		directionTextField.setText(direction);
 	}
 

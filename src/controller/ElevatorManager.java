@@ -14,50 +14,58 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	private List<Elevator> elevators;
 	private IElevator controller;
 	private List<Floor> floors;
+	//introduced it to handle remote exceptions only in the update method, and not in the setUI
 	private boolean uiInitialized;
+	private boolean listsInitialized;
 
 	private UserInterface ui;
 	private int exceptionsCatched;
 
 	public ElevatorManager(IElevator controller) {
-		this.uiInitialized = false;
 		this.controller = controller;
 		ui = null;
+		listsInitialized = false;
 	}
 
-	public void addElevators() throws RemoteException {
+	private void addElevators() throws RemoteException {
 		elevators = new ArrayList<Elevator>();
 		for (int i = 0; i < controller.getElevatorNum(); i++) {
 			Elevator e = new Elevator(i);
-			e.setName("Elevator "+i);
+			e.setName("Elevator " + i);
 			elevators.add(e);
+		}
+	}
+
+	private void addElevatorsToUI()
+	{
+		for(Elevator e: elevators)
+		{
 			ui.addElevator(e);
 		}
 	}
 
-	public void addElevator(Elevator elevator) throws RemoteException {
-		elevators.add(elevator);
-		elevator.setFloors(floors);
-	}
-
 	public void updateElevators() {
-		if (ui == null || exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
+		if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
 			return;
-
 		try {
-			if (!uiInitialized) {
+			if(!listsInitialized)
+			{
 				createFloorsList();
 				addElevators();
-				uiInitialized = true;
 			}
 
 			for (Elevator e : elevators) {
 				updateElevator(e);
 			}
 
-			ui.update(elevators, floors);
-
 			exceptionsCatched = 0;
+
+			if(ui==null) return;
+			if (!uiInitialized) {
+				addElevatorsToUI();
+				uiInitialized = true;
+			}
+			ui.update(elevators, floors);
 		} catch (RemoteException e) {
 			exceptionsCatched++;
 			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
@@ -72,6 +80,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		e.setSpeed(controller.getElevatorSpeed(n));
 		e.setWeight(controller.getElevatorCapacity(n));
 		e.setDoorStatus(controller.getElevatorDoorStatus(n));
+		e.setCommitedDirection(controller.getCommittedDirection(n));
 		e.setNearestFloor(controller.getElevatorFloor(n));
 	}
 
