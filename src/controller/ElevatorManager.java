@@ -24,6 +24,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		this.controller = controller;
 		ui = null;
 		listsInitialized = false;
+		elevators = null;
 	}
 
 	private void addElevators() throws RemoteException {
