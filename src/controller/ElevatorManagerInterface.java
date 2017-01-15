@@ -10,4 +10,5 @@ public interface ElevatorManagerInterface {
 	public void updateElevators();
 	public List<Elevator> getElevators();
 	public List<Floor> getFloors();
+	public int getFloorHeight();
 }

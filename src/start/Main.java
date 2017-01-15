@@ -26,8 +26,8 @@ public class Main {
 		ui = new SwingUserInterface();
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				ui.show();
 				ui.setElevatorManager(manager);
+				ui.show();
 
 				TimerTask timerTask = new TimerTask() {
 					@Override

@@ -1,61 +1,55 @@
 package ui;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import controller.ElevatorManager;
 import model.Elevator;
 import model.Floor;
 
-public class ElevatorPanel extends JPanel{
-	private static final int RECT_X = 50;
+public class ElevatorPanel extends JPanel {
+	private static final int OFFSET = 50;
 	private static final int RECT_WIDTH = 150;
 	private static final int RECT_HEIGHT = 30;
-	private static final int FEET_PER_FLOOR = 6;
-	private static int PANEL_HEIGHT;
+	private static int panelHeight;
 
-	private int floorsNumber;
-	private int y;
+	private int floorsNumber, y, floorHeight;
 	private boolean isInitialized;
 
-	public ElevatorPanel () {
+	public ElevatorPanel(int floorHeight) {
 		isInitialized = false;
-		y = 0;				
+		y = 0;
+		this.floorHeight = floorHeight;
 	}
-	
 
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawRect(OFFSET, y, RECT_WIDTH, RECT_HEIGHT);
+		g.drawLine(OFFSET, OFFSET, OFFSET, panelHeight + OFFSET);
+		g.drawLine(OFFSET + RECT_WIDTH, OFFSET, OFFSET + RECT_WIDTH, panelHeight + OFFSET);
+		for (int i = 0; i < floorsNumber; i++) {
+			g.drawString("Floor " + i, RECT_WIDTH / 2, Math.round((floorsNumber - i - 0.25f) * RECT_HEIGHT + OFFSET));
+		}
+	}
 
-    public void paintComponent(Graphics g) {
-    	super.paintComponent(g);
-    	g.fillRect(RECT_X, PANEL_HEIGHT - y, RECT_WIDTH + 1, RECT_HEIGHT);
-    	g.drawLine(RECT_X, 0, RECT_X, PANEL_HEIGHT);
-    	g.drawLine(RECT_X + RECT_WIDTH, 0, RECT_X + RECT_WIDTH, PANEL_HEIGHT);
+	public int update(Elevator elevator, List<Floor> floors) {
+		if (!isInitialized) {
+			this.floorsNumber = floors.size();
+			panelHeight = RECT_HEIGHT * floorsNumber;
+			this.setPreferredSize(new Dimension(RECT_WIDTH + 2 * OFFSET, panelHeight + 2 * OFFSET));
+			isInitialized = true;
+		}
+		setElevatorHeight(elevator.getPosition());
+		return this.y;
+	}
 
-    }
-
-    public void update(Elevator elevator, List<Floor> floors)
-    {
-    	if(!isInitialized)
-    	{
-    		this.floorsNumber = floors.size();
-    		PANEL_HEIGHT = floorsNumber * RECT_HEIGHT;
-    		isInitialized = true;
-    	}
-    	setElevatorHeight(elevator.getPosition());
-    }
-
-    // Set Elevator Height (in feet) which is the y point of the rectangle
-    private void setElevatorHeight(int feet) {
-    	this.y = feet * (PANEL_HEIGHT /(floorsNumber * FEET_PER_FLOOR) );
-    	System.out.println("feet: " + feet + " - y: " + y);
-    	repaint();
-    }
-
-
+	// Set Elevator Height (in feet) which is the y point of the rectangle
+	private void setElevatorHeight(int feet) {
+		int position = Math.round(((float) feet / floorHeight) * RECT_HEIGHT);
+		this.y = panelHeight - position + OFFSET - RECT_HEIGHT;
+		repaint();
+	}
 
 }

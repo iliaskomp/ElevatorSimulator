@@ -18,7 +18,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	private boolean listsInitialized;
 
 	private UIInterface ui;
-	private int exceptionsCatched;
+	private int exceptionsCatched, floorHeight;
 
 	public ElevatorManager(IElevator controller) {
 		this.controller = controller;
@@ -87,6 +87,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		for (int i = 0; i < controller.getFloorNum(); i++) {
 			floors.add(new Floor(i));
 		}
+		floorHeight = controller.getFloorHeight();
 	}
 
 	// Getters/Setters
@@ -99,5 +100,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		return floors;
 	}
 
-
+	public int getFloorHeight() {
+		return floorHeight;
+	}
 }

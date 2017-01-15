@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -41,7 +44,12 @@ public class SwingUserInterface implements UIInterface {
 	private Elevator selectedElevator;
 	private ElevatorManagerInterface elevatorManager;
 	private ElevatorPanel elevatorPanel;
+	private JScrollPane elevatorScrollPane;
 	private static final int TEXTFIELD_LENGTH = 8;
+
+	public SwingUserInterface() {
+		elevatorSelector = new JComboBox<String>();
+	}
 
 	public void update() {
 		for (Elevator e : elevatorManager.getElevators()) {
@@ -50,7 +58,10 @@ public class SwingUserInterface implements UIInterface {
 			}
 		}
 		updateUiData(selectedElevator);
-		elevatorPanel.update(selectedElevator, elevatorManager.getFloors());
+		int y = elevatorPanel.update(selectedElevator, elevatorManager.getFloors());
+		Rectangle bounds = elevatorScrollPane.getViewport().getViewRect();
+		y = (y - (bounds.height/2));
+		elevatorScrollPane.getViewport().setViewPosition(new Point(0, y));
 	}
 
 	private void updateUiData(Elevator e) {
@@ -69,13 +80,14 @@ public class SwingUserInterface implements UIInterface {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 
-		elevatorSelector = new JComboBox<String>();
 		frame.getContentPane().add(elevatorSelector, BorderLayout.PAGE_START);
 
-		elevatorPanel = new ElevatorPanel();
+		elevatorPanel = new ElevatorPanel(elevatorManager.getFloorHeight());
+		elevatorScrollPane = new JScrollPane(elevatorPanel);
+		elevatorScrollPane.setViewportView(elevatorPanel);
 		JPanel dataPanel = new JPanel();
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, elevatorPanel, dataPanel);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, elevatorScrollPane, dataPanel);
 		splitPane.setResizeWeight(0.5);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
@@ -165,6 +177,7 @@ public class SwingUserInterface implements UIInterface {
 
 		JRadioButton automaticButton = new JRadioButton("Automatic");
 		JRadioButton manualButton = new JRadioButton("Manual");
+		manualButton.setSelected(true);
 		ButtonGroup group = new ButtonGroup();
 		group.add(automaticButton);
 		group.add(manualButton);
