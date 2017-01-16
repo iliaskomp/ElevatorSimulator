@@ -14,7 +14,8 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	private List<Elevator> elevators;
 	private IElevator controller;
 	private List<Floor> floors;
-	//introduced it to handle remote exceptions only in the update method, and not in the setUI
+	// introduced it to handle remote exceptions only in the update method, and
+	// not in the setUI
 	private boolean listsInitialized;
 
 	private UIInterface ui;
@@ -40,8 +41,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
 			return;
 		try {
-			if(!listsInitialized)
-			{
+			if (!listsInitialized) {
 				createFloorsList();
 				addElevators();
 				listsInitialized = true;
@@ -50,7 +50,9 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			for (Elevator e : elevators) {
 				updateElevator(e);
 			}
-
+			for (Floor f : floors) {
+				updateFloor(f);
+			}
 			exceptionsCatched = 0;
 		} catch (RemoteException e) {
 			exceptionsCatched++;
@@ -68,6 +70,11 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		e.setDoorStatus(controller.getElevatorDoorStatus(n));
 		e.setCommitedDirection(controller.getCommittedDirection(n));
 		e.setNearestFloor(controller.getElevatorFloor(n));
+	}
+
+	private void updateFloor(Floor f) throws RemoteException {
+		f.setDownCall(controller.getFloorButtonDown(f.getFloor()));
+		f.setUpCall(controller.getFloorButtonUp(f.getFloor()));
 	}
 
 	public void setTargetFloor(Elevator elevator, int targetFloor) {
