@@ -1,6 +1,7 @@
 package start;
 
 import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Timer;
@@ -19,7 +20,8 @@ public class Main {
 	private static final long UPDATE_INTERVAL = 1000;
 
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
-		IElevator controller = new DummyElevator();
+		IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+		//IElevator controller = new DummyElevator();
 		ElevatorManagerInterface manager = new ElevatorManager(controller);
 		manager.updateElevators();
 
