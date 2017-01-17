@@ -33,14 +33,15 @@ public class ElevatorPanel extends JPanel {
 		g.fillRect(OFFSET, elevatorYPos, RECT_WIDTH, RECT_HEIGHT);
 		g.setColor(new Color(0, 0, 0));
 		g.drawRect(OFFSET, OFFSET, RECT_WIDTH, panelHeight);
+		int callMarkX = RECT_WIDTH + Math.round(OFFSET * 1.2f);
+		int callMarkR = RECT_HEIGHT / 2;
+		int textX = RECT_WIDTH / 4 + OFFSET;
 		for (int i = 0; i < floorsNumber; i++) {
 			g.setColor(new Color(0, 0, 0));
-			g.drawString("Floor " + i, RECT_WIDTH / 4 + OFFSET,
+			g.drawString("Floor " + i, textX,
 					Math.round((floorsNumber - i - 0.25f) * RECT_HEIGHT + OFFSET));
 			Floor floor = floors.get(i);
-			int callMarkX = RECT_WIDTH + Math.round(OFFSET * 1.2f);
-			int callMarkY = Math.round((floorsNumber - i - 0.8f) * RECT_HEIGHT) + OFFSET;
-			int callMarkR = RECT_HEIGHT / 2;
+			int callMarkY = Math.round((floorsNumber - i - 0.25f) * RECT_HEIGHT) + OFFSET-callMarkR;
 			g.setColor(new Color(0, 128, 0));
 			if (floor.isUpCall()) {
 				g.fillOval(callMarkX, callMarkY, callMarkR, callMarkR);
@@ -54,13 +55,22 @@ public class ElevatorPanel extends JPanel {
 				g.drawOval(callMarkX + OFFSET / 2, callMarkY, callMarkR, callMarkR);
 			}
 		}
+
+		int legendY = panelHeight + 2 * OFFSET;
+		g.setColor(new Color(0, 128, 0));
+		g.fillOval(callMarkX, legendY-callMarkR, callMarkR, callMarkR);
+		g.setColor(new Color(255, 87, 51));
+		g.fillOval(callMarkX, legendY-callMarkR + RECT_HEIGHT, callMarkR, callMarkR);
+		g.setColor(new Color(0, 0, 0));
+		g.drawString("Up Call", textX, legendY);
+		g.drawString("Down Call", textX, legendY + RECT_HEIGHT);
 	}
 
 	public int update(Elevator elevator, List<Floor> floors) {
 		if (!isInitialized) {
 			this.floorsNumber = floors.size();
 			panelHeight = RECT_HEIGHT * floorsNumber;
-			this.setPreferredSize(new Dimension(RECT_WIDTH + 2 * OFFSET, panelHeight + 2 * OFFSET));
+			this.setPreferredSize(new Dimension(RECT_WIDTH + 2 * OFFSET, panelHeight + 3 * OFFSET + 2 * RECT_HEIGHT));
 			isInitialized = true;
 		}
 		setElevatorHeight(elevator.getPosition());
