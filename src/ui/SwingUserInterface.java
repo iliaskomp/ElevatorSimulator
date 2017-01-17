@@ -46,9 +46,11 @@ public class SwingUserInterface implements UIInterface {
 	private ElevatorPanel elevatorPanel;
 	private JScrollPane elevatorScrollPane;
 	private static final int TEXTFIELD_LENGTH = 8;
+	private int scrollPaneLastY;
 
 	public SwingUserInterface() {
 		elevatorSelector = new JComboBox<String>();
+		scrollPaneLastY = 0;
 	}
 
 	public void update() {
@@ -60,8 +62,11 @@ public class SwingUserInterface implements UIInterface {
 		updateUiData(selectedElevator);
 		int y = elevatorPanel.update(selectedElevator, elevatorManager.getFloors());
 		Rectangle bounds = elevatorScrollPane.getViewport().getViewRect();
-		y = (y - (bounds.height/2));
-		elevatorScrollPane.getViewport().setViewPosition(new Point(0, y));
+		y = (y - (bounds.height / 2));
+		if (y != scrollPaneLastY) {
+			elevatorScrollPane.getViewport().setViewPosition(new Point(0, y));
+			scrollPaneLastY = y;
+		}
 	}
 
 	private void updateUiData(Elevator e) {
