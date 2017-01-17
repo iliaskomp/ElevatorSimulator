@@ -182,7 +182,11 @@ public class SwingUserInterface implements UIInterface {
 
 		JRadioButton automaticButton = new JRadioButton("Automatic");
 		JRadioButton manualButton = new JRadioButton("Manual");
-		manualButton.setSelected(true);
+		if (elevatorManager.getAutomaticMode()) {
+			automaticButton.setSelected(true);
+		} else {
+			manualButton.setSelected(true);
+		}
 		ButtonGroup group = new ButtonGroup();
 		group.add(automaticButton);
 		group.add(manualButton);
@@ -191,8 +195,7 @@ public class SwingUserInterface implements UIInterface {
 		automaticButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Automatic mode activated");
-				manualMode = true;
+				elevatorManager.setAutomaticMode(true);
 				goTargetButton.setEnabled(false);
 
 			}
@@ -200,8 +203,7 @@ public class SwingUserInterface implements UIInterface {
 		manualButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Manual mode activated");
-				manualMode = false;
+				elevatorManager.setAutomaticMode(false);
 				goTargetButton.setEnabled(true);
 
 			}

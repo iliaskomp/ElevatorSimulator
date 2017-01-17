@@ -11,4 +11,6 @@ public interface ElevatorManagerInterface {
 	public List<Elevator> getElevators();
 	public List<Floor> getFloors();
 	public int getFloorHeight();
+	public void setAutomaticMode(boolean automaticMode);
+	public boolean getAutomaticMode();
 }
