@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import controller.ElevatorManager;
 import controller.ElevatorManagerInterface;
 import sqelevator.IElevator;
-import test.DummyElevator;
+import test.DummyElevatorSimulator;
 import ui.SwingUserInterface;
 import ui.UIInterface;
 
@@ -20,8 +20,8 @@ public class Main {
 	private static final long UPDATE_INTERVAL = 1000;
 
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
-		IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-		//IElevator controller = new DummyElevator();
+		//IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+		IElevator controller = new DummyElevatorSimulator();
 		ElevatorManagerInterface manager = new ElevatorManager(controller);
 		manager.updateElevators();
 

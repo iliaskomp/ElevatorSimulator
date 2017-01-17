@@ -15,7 +15,7 @@ import org.junit.rules.ExpectedException;
 
 import model.Elevator;
 import sqelevator.IElevator;
-import test.DummyElevator;
+import test.DummyElevatorSimulator;
 import ui.SwingUserInterface;
 
 public class ElevatorManagerTest {
@@ -30,7 +30,7 @@ public class ElevatorManagerTest {
 	
 	@Before
 	public void setUp() {
-		controller = new DummyElevator();
+		controller = new DummyElevatorSimulator();
 		manager = new ElevatorManager(controller);
 		
 	}
