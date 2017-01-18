@@ -10,7 +10,7 @@ import sqelevator.IElevator;
 import ui.UIInterface;
 
 public class ElevatorManager implements ElevatorManagerInterface {
-	private static final int MAX_REMOTE_EXCEPTIONS = 5;
+	protected static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
 	private IElevator controller;
 	private List<Floor> floors;
@@ -70,7 +70,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 
 		e.setPosition(controller.getElevatorPosition(n));
 		e.setSpeed(controller.getElevatorSpeed(n));
-		e.setWeight(controller.getElevatorCapacity(n));
+		e.setWeight(controller.getElevatorWeight(n));
 		e.setDoorStatus(controller.getElevatorDoorStatus(n));
 		e.setCommitedDirection(controller.getCommittedDirection(n));
 		e.setNearestFloor(controller.getElevatorFloor(n));
@@ -112,9 +112,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 					: IElevator.ELEVATOR_DIRECTION_DOWN;
 			controller.setCommittedDirection(elevator.getElevatorNumber(), direction);
 		} catch (RemoteException e) {
-			exceptionsCatched++;
-			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
-				ui.showError("Connection lost to the elevator. Please restart the application.");
+				ui.showError("Could not send the command to the elevator. Please try again.");
 		}
 	}
 
@@ -146,5 +144,10 @@ public class ElevatorManager implements ElevatorManagerInterface {
 
 	public boolean getAutomaticMode() {
 		return this.automaticMode;
+	}
+
+	public void setUI(UIInterface ui)
+	{
+		this.ui = ui;
 	}
 }
