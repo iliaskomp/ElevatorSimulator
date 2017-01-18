@@ -1,23 +1,14 @@
 package ui;
 
-import static org.junit.Assert.*;
-
-import java.awt.Button;
-import java.rmi.RemoteException;
-import java.util.Timer;
-
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import controller.ElevatorManager;
-import controller.ElevatorManagerInterface;
 import model.Elevator;
 import sqelevator.IElevator;
 import test.DummyElevator;
-import test.DummyElevatorSimulator;
 
 public class SwingUserInterfaceTest {
 	private IElevator controller;
