@@ -10,7 +10,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -27,7 +26,6 @@ import javax.swing.SpringLayout;
 
 import controller.ElevatorManagerInterface;
 import model.Elevator;
-import model.Floor;
 import sqelevator.IElevator;
 
 public class SwingUserInterface implements UIInterface {
@@ -40,7 +38,6 @@ public class SwingUserInterface implements UIInterface {
 	protected JButton goTargetButton;
 	private JFrame frame;
 	private JComboBox<String> elevatorSelector;
-	private boolean manualMode;
 	private Elevator selectedElevator;
 	private ElevatorManagerInterface elevatorManager;
 	private ElevatorPanel elevatorPanel;
