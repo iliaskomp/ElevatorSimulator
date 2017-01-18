@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import model.Elevator;
 import model.Floor;
 
+@SuppressWarnings("serial")
 public class ElevatorPanel extends JPanel {
 	private static final int OFFSET = 50;
 	private static final int RECT_WIDTH = 150;
