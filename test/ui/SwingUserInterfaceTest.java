@@ -24,60 +24,56 @@ public class SwingUserInterfaceTest {
 	private SwingUserInterface ui;
 	private ElevatorManager manager;
 	private Elevator elevator;
-	
+
 	@Before
-	public void setUp() {		
+	public void setUp() {
 		controller = new DummyElevator();
 		manager = new ElevatorManager(controller);
 		manager.updateElevators();
 		ui = new SwingUserInterface();
 		ui.setElevatorManager(manager);
-		ui.show();
+		ui.setup();
 		manager.updateElevators();
 		ui.update();
 		elevator = manager.getElevators().get(0);
 	}
-	
+
 	@Test
-	public void testPositionTextField() throws RemoteException {
-		int positionText = Integer.parseInt(ui.positionTextField.getText());		
-		assertEquals(elevator.getPosition(), positionText);		
-	}
-	
-	@Test
-	public void testSpeedTextField() throws RemoteException {
-		int speedText = Integer.parseInt(ui.speedTextField.getText());		
-		assertEquals(elevator.getSpeed(), speedText);		
+	public void testPositionTextField() {
+		int positionText = Integer.parseInt(ui.positionTextField.getText());
+		assertEquals(elevator.getPosition(), positionText);
 	}
 
 	@Test
-	public void testWeightTextField() throws RemoteException {
-		int positionText = Integer.parseInt(ui.payloadTextField.getText());		
-		assertEquals(elevator.getWeight(), positionText);		
-	}
-	
-	@Test
-	public void testDoorStatusTextField() throws RemoteException {
-		int doorStatusText = Integer.parseInt(ui.doorsTextField.getText());		
-		assertEquals(elevator.getDoorStatus(), doorStatusText);		
-	}
-	
-	@Test
-	public void testCommitedDirectionTextField() throws RemoteException {
-		String commitedDirectionText = ui.directionTextField.getText();
-		int commitedDirection = elevator.getCommitedDirection();
-		String commitedDirectionString = null;
-		if (commitedDirection == 1) {
-			commitedDirectionString = "Down";
-		}
-		assertEquals(commitedDirectionString, commitedDirectionText);		
+	public void testSpeedTextField() {
+		int speedText = Integer.parseInt(ui.speedTextField.getText());
+		assertEquals(elevator.getSpeed(), speedText);
 	}
 
-	
-//	@Test
-//	public void testGoButtonClick() throws InterruptedException, RemoteException {
-//		JButton go = ui.goTargetButton;
-//		ui.targetTextField.setText("11");
-//		go.doClick();
-//	}
+	@Test
+	public void testWeightTextField() {
+		int positionText = Integer.parseInt(ui.payloadTextField.getText());
+		assertEquals(elevator.getWeight(), positionText);
+	}
+
+	@Test
+	public void testDoorStatusTextField() {
+		assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, elevator.getDoorStatus());
+		assertEquals("Closed", ui.doorStatusTextField.getText());
+	}
+
+	@Test
+	public void testCommitedDirectionTextField() {
+		assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getCommitedDirection());
+		assertEquals("Uncommitted", ui.directionTextField.getText());
+	}
+
+
+	@Test
+	public void testGoButtonClick() {
+		ui.targetTextField.setText("10");
+		ui.goTargetButton.doClick();
+		manager.updateElevators();
+		assertEquals(10, elevator.getTargetFloor());
+	}
 }

@@ -35,7 +35,7 @@ public class SwingUserInterface implements UIInterface {
 	protected JTextField directionTextField;
 	protected JTextField speedTextField;
 	protected JTextField payloadTextField;
-	protected JTextField doorsTextField;
+	protected JTextField doorStatusTextField;
 	protected JTextField targetTextField;
 	protected JButton goTargetButton;
 	private JFrame frame;
@@ -75,12 +75,12 @@ public class SwingUserInterface implements UIInterface {
 			setDirectionTextField(e.getCommitedDirection());
 			setSpeedTextField(e.getSpeed() + "");
 			setPayloadTextField(e.getWeight() + "");
-			setDoorStatusTextField(e.getDoorStatus() + "");
+			setDoorStatusTextField(e.getDoorStatus());
 		}
 
 	}
 
-	public void show() {
+	protected void setup() {
 		frame = new JFrame("Elevator Management");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
@@ -104,8 +104,11 @@ public class SwingUserInterface implements UIInterface {
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
 		frame.setPreferredSize(new Dimension(1000, 750));
 		frame.pack();
-		frame.setVisible(true);
+	}
 
+	public void show() {
+		setup();
+		frame.setVisible(true);
 	}
 
 	private void updateDataPanel(JPanel dataPanel) {
@@ -151,10 +154,10 @@ public class SwingUserInterface implements UIInterface {
 		// Door Status
 		JLabel doorStatusLabel = new JLabel("Door Status: ", JLabel.TRAILING);
 		dataListPanel.add(doorStatusLabel);
-		doorsTextField = new JTextField(TEXTFIELD_LENGTH);
-		doorStatusLabel.setLabelFor(doorsTextField);
-		doorsTextField.setFocusable(false);
-		dataListPanel.add(doorsTextField);
+		doorStatusTextField = new JTextField(TEXTFIELD_LENGTH);
+		doorStatusLabel.setLabelFor(doorStatusTextField);
+		doorStatusTextField.setFocusable(false);
+		dataListPanel.add(doorStatusTextField);
 		dataListPanel.add(new JLabel(""));
 
 		// Target
@@ -172,7 +175,6 @@ public class SwingUserInterface implements UIInterface {
 			public void actionPerformed(ActionEvent e) {
 				int targetFloor = Integer.parseInt(targetTextField.getText());
 				elevatorManager.setTargetFloor(selectedElevator, targetFloor);
-
 			}
 		});
 
@@ -241,7 +243,7 @@ public class SwingUserInterface implements UIInterface {
 	}
 
 	private void setDirectionTextField(int commitedDirection) {
-		String direction = "Invalid";
+		String direction;
 		switch (commitedDirection) {
 		case IElevator.ELEVATOR_DIRECTION_DOWN:
 			direction = "Down";
@@ -251,6 +253,9 @@ public class SwingUserInterface implements UIInterface {
 			break;
 		case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
 			direction = "Uncommitted";
+			break;
+		default:
+			direction = "Invalid";
 			break;
 		}
 		directionTextField.setText(direction);
@@ -264,8 +269,26 @@ public class SwingUserInterface implements UIInterface {
 		payloadTextField.setText(payload);
 	}
 
-	private void setDoorStatusTextField(String doors) {
-		doorsTextField.setText(doors);
+	private void setDoorStatusTextField(int doorStatus) {
+		String status;
+		switch (doorStatus) {
+		case IElevator.ELEVATOR_DOORS_CLOSED:
+			status = "Closed";
+			break;
+		case IElevator.ELEVATOR_DOORS_CLOSING:
+			status = "Closing";
+			break;
+		case IElevator.ELEVATOR_DOORS_OPEN:
+			status = "Open";
+			break;
+		case IElevator.ELEVATOR_DOORS_OPENING:
+			status = "Opening";
+			break;
+		default:
+			status = "Invalid";
+			break;
+		}
+		doorStatusTextField.setText(status);
 	}
 
 	private String getSelectedElevatorName() {
@@ -277,6 +300,7 @@ public class SwingUserInterface implements UIInterface {
 		for (Elevator elevator : elevatorManager.getElevators()) {
 			elevatorSelector.addItem(elevator.getName());
 		}
+		elevatorManager.setUI(this);
 	}
 
 }
