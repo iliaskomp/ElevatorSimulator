@@ -16,11 +16,12 @@ import ui.UIInterface;
 
 public class Main {
 	private static UIInterface ui;
-	//update interval in miliseconds
-	private static final long UPDATE_INTERVAL = 1000;
+	// update interval in miliseconds
+	private static final long UPDATE_INTERVAL = 100;
 
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
-		//IElevator controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+		// IElevator controller = (IElevator)
+		// Naming.lookup("rmi://localhost/ElevatorSim");
 		IElevator controller = new DummyElevatorSimulator();
 		ElevatorManagerInterface manager = new ElevatorManager(controller);
 		manager.updateElevators();
@@ -34,8 +35,8 @@ public class Main {
 				TimerTask timerTask = new TimerTask() {
 					@Override
 					public void run() {
-							manager.updateElevators();
-							ui.update();
+						manager.updateElevators();
+						ui.update();
 					}
 				};
 
