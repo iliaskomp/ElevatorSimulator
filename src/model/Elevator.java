@@ -14,14 +14,11 @@ public class Elevator {
 	private boolean manualMode;
 	private String name;
 	private int commitedDirection;
-
-	private List<Floor> floors;
+	private int targetFloor;
 
 	public Elevator(int elevatorNumber) {
 		this.elevatorNumber = elevatorNumber;
 	}
-
-
 
 	// Getters/Setters
 	public int getElevatorNumber() {
@@ -72,14 +69,6 @@ public class Elevator {
 		this.positionNearestFloor = nearestFloor;
 	}
 
-	public List<Floor> getFloors() {
-		return floors;
-	}
-
-	public void setFloors(List<Floor> floors) {
-		this.floors = floors;
-	}
-
 	public int getWeight() {
 		return weight;
 	}
@@ -88,28 +77,28 @@ public class Elevator {
 		this.weight = weight;
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
-
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
-
 	public int getCommitedDirection() {
 		return commitedDirection;
 	}
 
-
-
 	public void setCommitedDirection(int commitedDirection) {
 		this.commitedDirection = commitedDirection;
+	}
+
+	public int getTargetFloor() {
+		return targetFloor;
+	}
+
+	public void setTargetFloor(int targetFloor) {
+		this.targetFloor = targetFloor;
 	}
 
 }

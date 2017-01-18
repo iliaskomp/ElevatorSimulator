@@ -46,9 +46,11 @@ public class SwingUserInterface implements UIInterface {
 	private ElevatorPanel elevatorPanel;
 	private JScrollPane elevatorScrollPane;
 	private static final int TEXTFIELD_LENGTH = 8;
+	private int scrollPaneLastY;
 
 	public SwingUserInterface() {
 		elevatorSelector = new JComboBox<String>();
+		scrollPaneLastY = 0;
 	}
 
 	public void update() {
@@ -60,8 +62,11 @@ public class SwingUserInterface implements UIInterface {
 		updateUiData(selectedElevator);
 		int y = elevatorPanel.update(selectedElevator, elevatorManager.getFloors());
 		Rectangle bounds = elevatorScrollPane.getViewport().getViewRect();
-		y = (y - (bounds.height/2));
-		elevatorScrollPane.getViewport().setViewPosition(new Point(0, y));
+		y = (y - (bounds.height / 2));
+		if (y != scrollPaneLastY) {
+			elevatorScrollPane.getViewport().setViewPosition(new Point(0, y));
+			scrollPaneLastY = y;
+		}
 	}
 
 	private void updateUiData(Elevator e) {
@@ -177,7 +182,11 @@ public class SwingUserInterface implements UIInterface {
 
 		JRadioButton automaticButton = new JRadioButton("Automatic");
 		JRadioButton manualButton = new JRadioButton("Manual");
-		manualButton.setSelected(true);
+		if (elevatorManager.getAutomaticMode()) {
+			automaticButton.setSelected(true);
+		} else {
+			manualButton.setSelected(true);
+		}
 		ButtonGroup group = new ButtonGroup();
 		group.add(automaticButton);
 		group.add(manualButton);
@@ -186,8 +195,7 @@ public class SwingUserInterface implements UIInterface {
 		automaticButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Automatic mode activated");
-				manualMode = true;
+				elevatorManager.setAutomaticMode(true);
 				goTargetButton.setEnabled(false);
 
 			}
@@ -195,8 +203,7 @@ public class SwingUserInterface implements UIInterface {
 		manualButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Manual mode activated");
-				manualMode = false;
+				elevatorManager.setAutomaticMode(false);
 				goTargetButton.setEnabled(true);
 
 			}

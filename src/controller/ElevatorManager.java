@@ -14,6 +14,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	private List<Elevator> elevators;
 	private IElevator controller;
 	private List<Floor> floors;
+	private boolean automaticMode;
 	// introduced it to handle remote exceptions only in the update method, and
 	// not in the setUI
 	private boolean listsInitialized;
@@ -49,6 +50,9 @@ public class ElevatorManager implements ElevatorManagerInterface {
 
 			for (Elevator e : elevators) {
 				updateElevator(e);
+				if (automaticMode) {
+					controlElevator(e);
+				}
 			}
 			for (Floor f : floors) {
 				updateFloor(f);
@@ -70,6 +74,30 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		e.setDoorStatus(controller.getElevatorDoorStatus(n));
 		e.setCommitedDirection(controller.getCommittedDirection(n));
 		e.setNearestFloor(controller.getElevatorFloor(n));
+		e.setTargetFloor(controller.getTarget(n));
+	}
+
+	private void controlElevator(Elevator e) throws RemoteException {
+		if (e.getNearestFloor() == e.getTargetFloor() && e.getSpeed() == 0
+				&& e.getDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN) {
+			if (e.getNearestFloor() == 0) {
+				e.setCommitedDirection(IElevator.ELEVATOR_DIRECTION_UP);
+			}
+			if (e.getNearestFloor() == floors.size() - 1) {
+				e.setCommitedDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
+			}
+			switch (e.getCommitedDirection()) {
+			case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+			case IElevator.ELEVATOR_DIRECTION_DOWN:
+				setTargetFloor(e, e.getNearestFloor() - 1);
+				break;
+			case IElevator.ELEVATOR_DIRECTION_UP:
+				setTargetFloor(e, e.getNearestFloor() + 1);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	private void updateFloor(Floor f) throws RemoteException {
@@ -110,5 +138,13 @@ public class ElevatorManager implements ElevatorManagerInterface {
 
 	public int getFloorHeight() {
 		return floorHeight;
+	}
+
+	public void setAutomaticMode(boolean automaticMode) {
+		this.automaticMode = automaticMode;
+	}
+
+	public boolean getAutomaticMode() {
+		return this.automaticMode;
 	}
 }
