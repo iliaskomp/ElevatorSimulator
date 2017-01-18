@@ -1,9 +1,5 @@
 package model;
 
-import java.util.List;
-
-import sqelevator.IElevator;
-
 public class Elevator {
 	private int elevatorNumber;
 	private int position; // position in feet
