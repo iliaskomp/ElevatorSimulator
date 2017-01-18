@@ -31,13 +31,13 @@ import model.Floor;
 import sqelevator.IElevator;
 
 public class SwingUserInterface implements UIInterface {
-	private JTextField positionTextField;
-	private JTextField directionTextField;
-	private JTextField speedTextField;
-	private JTextField payloadTextField;
-	private JTextField doorsTextField;
-	private JTextField targetTextField;
-	private JButton goTargetButton;
+	protected JTextField positionTextField;
+	protected JTextField directionTextField;
+	protected JTextField speedTextField;
+	protected JTextField payloadTextField;
+	protected JTextField doorsTextField;
+	protected JTextField targetTextField;
+	protected JButton goTargetButton;
 	private JFrame frame;
 	private JComboBox<String> elevatorSelector;
 	private boolean manualMode;
