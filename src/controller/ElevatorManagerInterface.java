@@ -7,12 +7,12 @@ import model.Floor;
 import ui.UIInterface;
 
 public interface ElevatorManagerInterface {
-	public void setTargetFloor(Elevator elevator, int targetFloor);
-	public void updateElevators();
-	public List<Elevator> getElevators();
-	public List<Floor> getFloors();
-	public int getFloorHeight();
-	public void setAutomaticMode(boolean automaticMode);
-	public boolean getAutomaticMode();
-	public void setUI(UIInterface ui);
+	void setTargetFloor(Elevator elevator, int targetFloor);
+	void updateElevators();
+	List<Elevator> getElevators();
+	List<Floor> getFloors();
+	int getFloorHeight();
+	void setAutomaticMode(boolean automaticMode);
+	boolean isAutomaticMode();
+	void setUI(UIInterface ui);
 }

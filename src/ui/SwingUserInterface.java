@@ -181,7 +181,7 @@ public class SwingUserInterface implements UIInterface {
 
 		JRadioButton automaticButton = new JRadioButton("Automatic");
 		JRadioButton manualButton = new JRadioButton("Manual");
-		if (elevatorManager.getAutomaticMode()) {
+		if (elevatorManager.isAutomaticMode()) {
 			automaticButton.setSelected(true);
 		} else {
 			manualButton.setSelected(true);

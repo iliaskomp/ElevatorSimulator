@@ -12,7 +12,7 @@ import ui.UIInterface;
 public class ElevatorManager implements ElevatorManagerInterface {
 	protected static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
-	private IElevator controller;
+	private final IElevator controller;
 	private List<Floor> floors;
 	private boolean automaticMode;
 	// introduced it to handle remote exceptions only in the update method, and
@@ -39,8 +39,10 @@ public class ElevatorManager implements ElevatorManagerInterface {
 	}
 
 	public void updateElevators() {
-		if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
+		if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS) {
 			return;
+		}
+			
 		try {
 			if (!listsInitialized) {
 				createFloorsList();
@@ -60,8 +62,9 @@ public class ElevatorManager implements ElevatorManagerInterface {
 			exceptionsCatched = 0;
 		} catch (RemoteException e) {
 			exceptionsCatched++;
-			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS)
+			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS) {
 				ui.showError("Connection lost to the elevator. Please restart the application.");
+			}				
 		}
 	}
 
@@ -142,7 +145,7 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		this.automaticMode = automaticMode;
 	}
 
-	public boolean getAutomaticMode() {
+	public boolean isAutomaticMode() {
 		return this.automaticMode;
 	}
 
