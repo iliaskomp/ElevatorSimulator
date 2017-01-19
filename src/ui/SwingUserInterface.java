@@ -196,6 +196,7 @@ public class SwingUserInterface implements UIInterface {
 			public void actionPerformed(ActionEvent e) {
 				elevatorManager.setAutomaticMode(true);
 				goTargetButton.setEnabled(false);
+				targetTextField.setEnabled(false);
 
 			}
 		});
@@ -204,6 +205,7 @@ public class SwingUserInterface implements UIInterface {
 			public void actionPerformed(ActionEvent e) {
 				elevatorManager.setAutomaticMode(false);
 				goTargetButton.setEnabled(true);
+				targetTextField.setEnabled(true);
 
 			}
 		});
