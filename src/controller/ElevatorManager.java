@@ -9,7 +9,7 @@ import model.Floor;
 import sqelevator.IElevator;
 import ui.UIInterface;
 
-public class ElevatorManager implements ElevatorManagerInterface {
+public class ElevatorManager implements ElevatorManagerInterface, IElevatorAlgorithm {
 	protected static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
 	private final IElevator controller;
@@ -80,7 +80,11 @@ public class ElevatorManager implements ElevatorManagerInterface {
 		e.setTargetFloor(controller.getTarget(n));
 	}
 
-	private void controlElevator(Elevator e) throws RemoteException {
+	/* (non-Javadoc)
+	 * @see controller.IElevatorAlgorithm#controlElevator(model.Elevator)
+	 */
+	@Override
+	public void controlElevator(Elevator e) throws RemoteException {
 		if (e.getNearestFloor() == e.getTargetFloor() && e.getSpeed() == 0
 				&& e.getDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN) {
 			if (e.getNearestFloor() == 0) {
