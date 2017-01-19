@@ -10,23 +10,50 @@ import javax.swing.JPanel;
 import model.Elevator;
 import model.Floor;
 
+/**
+ * The Class ElevatorPanel.
+ * Generates the elevator panel in the gui (the left panel).
+ * Elevator graphically moves up/down according to the instructions.
+ * @author Ilias Komp
+ */
 @SuppressWarnings("serial")
 public class ElevatorPanel extends JPanel {
+	
+	/** The Constant OFFSET. */
 	private static final int OFFSET = 50;
+	
+	/** The Constant RECT_WIDTH. */
 	private static final int RECT_WIDTH = 150;
+	
+	/** The Constant RECT_HEIGHT. */
 	private static final int RECT_HEIGHT = 30;
+	
+	/** The panel height. */
 	private static int panelHeight;
 
+	/** The floor height. */
 	private int floorsNumber, elevatorYPos, floorHeight;
+	
+	/** The is initialized. */
 	private boolean isInitialized;
+	
+	/** The floors. */
 	private List<Floor> floors;
 
+	/**
+	 * Instantiates a new elevator panel.
+	 *
+	 * @param floorHeight the floor height
+	 */
 	public ElevatorPanel(int floorHeight) {
 		isInitialized = false;
 		elevatorYPos = 0;
 		this.floorHeight = floorHeight;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -67,6 +94,13 @@ public class ElevatorPanel extends JPanel {
 		g.drawString("Down Call", textX, legendY + RECT_HEIGHT);
 	}
 
+	/**
+	 * Updates the elevator ui.
+	 * 
+	 * @param elevator the elevator
+	 * @param floors the floors
+	 * @return the y elevator position
+	 */
 	public int update(Elevator elevator, List<Floor> floors) {
 		if (!isInitialized) {
 			this.floorsNumber = floors.size();
@@ -79,7 +113,11 @@ public class ElevatorPanel extends JPanel {
 		return this.elevatorYPos;
 	}
 
-	// Set Elevator Height (in feet) which is the y point of the rectangle
+	/**
+	 * Set Elevator Height (in feet) which is the y point of the rectangle.
+	 *
+	 * @param feet the new elevator height
+	 */
 	private void setElevatorHeight(int feet) {
 		int position = Math.round(((float) feet / floorHeight) * RECT_HEIGHT);
 		this.elevatorYPos = panelHeight - position + OFFSET - RECT_HEIGHT;
