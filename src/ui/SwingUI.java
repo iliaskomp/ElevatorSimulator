@@ -38,7 +38,7 @@ import sqelevator.IElevator;
  * 
  * @author Ilias, Viktor
  */
-public class SwingUserInterface implements UIInterface {
+public class SwingUI implements UIInterface {
 	
 	/** The position text field. */
 	protected JTextField positionTextField;
@@ -88,7 +88,7 @@ public class SwingUserInterface implements UIInterface {
 	/**
 	 * Instantiates a new swing user interface.
 	 */
-	public SwingUserInterface() {
+	public SwingUI() {
 		elevatorSelector = new JComboBox<String>();
 		scrollPaneLastY = 0;
 	}

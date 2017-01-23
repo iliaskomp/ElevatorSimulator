@@ -13,7 +13,7 @@ import controller.ElevatorManagerMainInterface;
 import controller.ElevatorManagerUIInterface;
 import sqelevator.IElevator;
 import test.DummyElevatorSimulator;
-import ui.SwingUserInterface;
+import ui.SwingUI;
 import ui.UIInterface;
 
 public class Main {
@@ -29,7 +29,7 @@ public class Main {
 		ElevatorManagerUIInterface uiManager = manager;
 		manager.updateElevators();
 
-		ui = new SwingUserInterface();
+		ui = new SwingUI();
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				ui.setElevatorManager(uiManager);

@@ -18,7 +18,7 @@ import test.DummyElevator;
  */
 public class SwingUserInterfaceTest {
 	private IElevator controller;
-	private SwingUserInterface ui;
+	private SwingUI ui;
 	private ElevatorManager manager;
 	private Elevator elevator;
 
@@ -27,7 +27,7 @@ public class SwingUserInterfaceTest {
 		controller = new DummyElevator();
 		manager = new ElevatorManager(controller);
 		manager.updateElevators();
-		ui = new SwingUserInterface();
+		ui = new SwingUI();
 		ui.setElevatorManager(manager);
 		ui.setup();
 		manager.updateElevators();
