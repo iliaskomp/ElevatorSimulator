@@ -29,7 +29,7 @@ public class ElevatorPanel extends JPanel {
 	private static final int RECT_HEIGHT = 30;
 	
 	/** The panel height. */
-	private static int panelHeight;
+	private int panelHeight;
 
 	/** The floor height. */
 	private int floorsNumber, elevatorYPos, floorHeight;
