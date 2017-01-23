@@ -21,7 +21,7 @@ import test.DummyElevator;
 import ui.UIInterface;
 
 /**
- * 
+ *
  * Test for the ElevatorManager class
  * @author Ilias, Viktor
  *
@@ -31,7 +31,7 @@ public class ElevatorManagerTest {
 	private ElevatorManager manager;
 	private IElevator controller;
 	private Elevator elevator;
-	
+
 	@Rule
 	public EasyMockRule rule = new EasyMockRule(this);
 	@Mock
@@ -54,7 +54,7 @@ public class ElevatorManagerTest {
 	public void testSetElevatorName() throws RemoteException {
 		assertEquals("Elevator 0", elevator.getName());
 	}
-	
+
 	@Test
 	public void testElevatorsSize() throws RemoteException {
 		assertEquals(controller.getElevatorNum(), manager.getElevators().size());
@@ -69,10 +69,10 @@ public class ElevatorManagerTest {
 	public void testElevatorCommitedDirection() {
 		manager.updateElevators();
 		assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getCommitedDirection());
-		manager.setTargetFloor(elevator, 5);
+		manager.setTargetFloor(elevator, 2);
 		manager.updateElevators();
 		assertEquals(IElevator.ELEVATOR_DIRECTION_UP, elevator.getCommitedDirection());
-		manager.setTargetFloor(elevator, 0);
+		manager.setTargetFloor(elevator, 1);
 		manager.updateElevators();
 		assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, elevator.getCommitedDirection());
 	}
@@ -81,41 +81,41 @@ public class ElevatorManagerTest {
 	public void testSetPosition() throws RemoteException {
 		assertEquals(controller.getElevatorPosition(0), elevator.getPosition());
 	}
-	
+
 	@Test
 	public void testSetSpeed() throws RemoteException {
 		assertEquals(controller.getElevatorSpeed(0), elevator.getSpeed());
 	}
-	
+
 	@Test
 	public void testSetWeight() throws RemoteException {
 		assertEquals(controller.getElevatorWeight(0), elevator.getWeight());
 	}
-	
+
 	@Test
 	public void testSetDoorStatus() throws RemoteException {
 		assertEquals(controller.getElevatorDoorStatus(0), elevator.getDoorStatus());
 	}
-	
+
 	@Test
 	public void testSetNearestFloor() throws RemoteException {
 		assertEquals(controller.getElevatorFloor(0), elevator.getNearestFloor());
 	}
-	
+
 	@Test
 	public void testTargetFloor() throws RemoteException {
 		assertEquals(controller.getTarget(0), elevator.getTargetFloor());
 	}
-	
+
 	@Test
 	public void testAutomaticMode() {
 		manager.setAutomaticMode(true);
 		assertTrue(manager.isAutomaticMode());
 	}
-	
+
 	@Test
 	public void testGetFloorHeight() throws RemoteException {
-		assertEquals(controller.getFloorHeight(), manager.getFloorHeight());		
+		assertEquals(controller.getFloorHeight(), manager.getFloorHeight());
 	}
 
 	@Test
@@ -130,7 +130,13 @@ public class ElevatorManagerTest {
 	}
 
 	@Test
-	public void testFloorsCount() {
+	public void testFloorsCount() throws RemoteException {
+		assertEquals(controller.getFloorButtonUp(0), manager.getFloors().get(0).isUpCall());
+		assertEquals(controller.getFloorButtonDown(9), manager.getFloors().get(9).isDownCall());
+	}
+
+	@Test
+	public void testFloorsUpdated() {
 		assertEquals(10, manager.getFloorsCount());
 	}
 

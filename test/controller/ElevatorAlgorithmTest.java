@@ -1,6 +1,7 @@
 package controller;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.rmi.RemoteException;
 
@@ -31,6 +32,7 @@ public class ElevatorAlgorithmTest {
 		controller = new DummyElevator();
 		algorithm = new ElevatorManager(controller);
 		elevator = new Elevator(0);
+		elevator.setCommitedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 		elevator.setNearestFloor(0);
 		elevator.setTargetFloor(0);
 		elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_OPEN);
@@ -43,6 +45,7 @@ public class ElevatorAlgorithmTest {
 		manager.setTargetFloor(elevator, 1);
 		replay(manager);
 		algorithm.controlElevator(elevator, manager);
+		assertEquals(elevator.getCommitedDirection(), IElevator.ELEVATOR_DIRECTION_UP);
 	}
 
 	@Test
@@ -54,6 +57,7 @@ public class ElevatorAlgorithmTest {
 		manager.setTargetFloor(elevator, 8);
 		replay(manager);
 		algorithm.controlElevator(elevator, manager);
+		assertEquals(elevator.getCommitedDirection(), IElevator.ELEVATOR_DIRECTION_DOWN);
 	}
 
 	@Test

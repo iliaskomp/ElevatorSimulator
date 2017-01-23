@@ -5,9 +5,10 @@ import java.rmi.RemoteException;
 import sqelevator.IElevator;
 
 /**
- * 
- * DummyElevator class returning fixed values
- * used in ElevatorManagerTest and SwingUserInterfaceTest classes
+ *
+ * DummyElevator class returning fixed values used in ElevatorManagerTest and
+ * SwingUserInterfaceTest classes
+ *
  * @author Ilias, Viktor
  *
  */
@@ -52,7 +53,8 @@ public class DummyElevator implements IElevator {
 
 	@Override
 	public int getElevatorPosition(int elevatorNumber) throws RemoteException {
-		if(elevatorNumber>0) throw new RemoteException();
+		if (elevatorNumber > 0)
+			throw new RemoteException();
 		return 1;
 	}
 
@@ -73,11 +75,15 @@ public class DummyElevator implements IElevator {
 
 	@Override
 	public boolean getFloorButtonDown(int floor) throws RemoteException {
+		if (floor == 9)
+			return true;
 		return false;
 	}
 
 	@Override
 	public boolean getFloorButtonUp(int floor) throws RemoteException {
+		if (floor == 0)
+			return true;
 		return false;
 	}
 
