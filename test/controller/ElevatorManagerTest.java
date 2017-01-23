@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import model.Elevator;
-import model.Floor;
 import sqelevator.IElevator;
 import test.DummyElevator;
 import ui.UIInterface;

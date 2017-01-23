@@ -24,7 +24,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import controller.ElevatorManagerInterface;
 import controller.ElevatorManagerUIInterface;
 import model.Elevator;
 import sqelevator.IElevator;
