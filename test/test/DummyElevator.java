@@ -42,7 +42,7 @@ public class DummyElevator implements IElevator {
 
 	@Override
 	public int getElevatorFloor(int elevatorNumber) throws RemoteException {
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -53,22 +53,22 @@ public class DummyElevator implements IElevator {
 	@Override
 	public int getElevatorPosition(int elevatorNumber) throws RemoteException {
 		if(elevatorNumber>0) throw new RemoteException();
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public int getElevatorSpeed(int elevatorNumber) throws RemoteException {
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public int getElevatorWeight(int elevatorNumber) throws RemoteException {
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public int getElevatorCapacity(int elevatorNumber) throws RemoteException {
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class DummyElevator implements IElevator {
 
 	@Override
 	public int getFloorHeight() throws RemoteException {
-		return 0;
+		return 1;
 	}
 
 	@Override
