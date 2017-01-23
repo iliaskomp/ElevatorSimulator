@@ -3,18 +3,18 @@ package model;
 /**
  * The Class Elevator.
  * Model of the elevator.
- * @author Ilias Komp
+ * @author Ilias, Viktor
  */
 public class Elevator {
 	
 	/** The elevator number. */
 	private int elevatorNumber;
 	
-	/** The position. */
-	private int position; // position in feet
+	/** The position in feeet */
+	private int position;
 	
-	/** The position nearest floor. */
-	private int positionNearestFloor; // position in relation to nearest floor
+	/** The position in relation to the nearest floor. */
+	private int positionNearestFloor;
 	
 	/** The speed. */
 	private int speed;

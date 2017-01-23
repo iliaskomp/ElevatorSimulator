@@ -7,7 +7,7 @@ import sqelevator.IElevator;
 /**
  * 
  * Dummy Elevator Simulator before the actual simulator was given
- * @author Ilias Komp
+ * @author Ilias, Viktor
  *
  */
 public class DummyElevatorSimulator implements IElevator {

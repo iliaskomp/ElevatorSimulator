@@ -31,10 +31,11 @@ import sqelevator.IElevator;
 
 
 /**
- * The Class SwingUserInterface is the entry point for the GUI.
+ * The Class SwingUserInterface
+ * Takes care of UI, sets up the UI and updates it with the values taken
+ * from ElevatorManager.
  * 
- * 
- * 
+ * @author Ilias, Viktor
  */
 public class SwingUserInterface implements UIInterface {
 	
@@ -111,9 +112,9 @@ public class SwingUserInterface implements UIInterface {
 	}
 
 	/**
-	 * Update ui data.
+	 * Update ui data for the selected elevator (from dropdown)
 	 *
-	 * @param e the e
+	 * @param e the selected elevator
 	 */
 	private void updateUiData(Elevator e) {
 		if (e != null) {
@@ -127,7 +128,7 @@ public class SwingUserInterface implements UIInterface {
 	}
 
 	/**
-	 * Setup.
+	 * Setup the panels on the UI
 	 */
 	protected void setup() {
 		frame = new JFrame("Elevator Management");
@@ -148,7 +149,7 @@ public class SwingUserInterface implements UIInterface {
 
 		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 
-		updateDataPanel(dataPanel);
+		setupDataPanel(dataPanel);
 
 		changeFont(frame, new Font("Roboto", Font.PLAIN, 18));
 		frame.setPreferredSize(new Dimension(1000, 750));
@@ -164,11 +165,11 @@ public class SwingUserInterface implements UIInterface {
 	}
 
 	/**
-	 * Update data panel.
+	 * Setup the data panel without the values 
 	 *
-	 * @param dataPanel the data panel
+	 * @param dataPanel the data panel (right panel)
 	 */
-	private void updateDataPanel(JPanel dataPanel) {
+	private void setupDataPanel(JPanel dataPanel) {
 		// Create and populate the panel.
 		JPanel dataListPanel = new JPanel(new SpringLayout());
 
@@ -283,7 +284,7 @@ public class SwingUserInterface implements UIInterface {
 	}
 
 	/**
-	 * Change font.
+	 * Change font on all components of the ui.
 	 *
 	 * @param component the component
 	 * @param font the font
@@ -308,7 +309,7 @@ public class SwingUserInterface implements UIInterface {
 	/**
 	 * Sets the position text field.
 	 *
-	 * @param position the new position text field
+	 * @param position the new position
 	 */
 	// Getters/Setters
 	private void setPositionTextField(String position) {
@@ -318,7 +319,7 @@ public class SwingUserInterface implements UIInterface {
 	/**
 	 * Sets the direction text field.
 	 *
-	 * @param commitedDirection the new direction text field
+	 * @param commitedDirection the new direction
 	 */
 	private void setDirectionTextField(int commitedDirection) {
 		String direction;
@@ -342,7 +343,7 @@ public class SwingUserInterface implements UIInterface {
 	/**
 	 * Sets the speed text field.
 	 *
-	 * @param speed the new speed text field
+	 * @param speed the new speed
 	 */
 	private void setSpeedTextField(String speed) {
 		speedTextField.setText(speed);
@@ -351,7 +352,7 @@ public class SwingUserInterface implements UIInterface {
 	/**
 	 * Sets the payload text field.
 	 *
-	 * @param payload the new payload text field
+	 * @param payload the new payload
 	 */
 	private void setPayloadTextField(String payload) {
 		payloadTextField.setText(payload);
@@ -360,7 +361,7 @@ public class SwingUserInterface implements UIInterface {
 	/**
 	 * Sets the door status text field.
 	 *
-	 * @param doorStatus the new door status text field
+	 * @param doorStatus the new door status
 	 */
 	private void setDoorStatusTextField(int doorStatus) {
 		String status;

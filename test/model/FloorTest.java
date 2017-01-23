@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * 
  * Test for the Floor class
- * @author Ilias Komp
+ * @author Ilias, Viktor
  *
  */
 public class FloorTest {

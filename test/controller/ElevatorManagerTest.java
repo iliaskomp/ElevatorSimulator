@@ -23,7 +23,7 @@ import ui.UIInterface;
 /**
  * 
  * Test for the ElevatorManager class
- * @author Ilias Komp
+ * @author Ilias, Viktor
  *
  */
 public class ElevatorManagerTest {

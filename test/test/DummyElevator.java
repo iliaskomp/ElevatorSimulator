@@ -8,7 +8,7 @@ import sqelevator.IElevator;
  * 
  * DummyElevator class returning fixed values
  * used in ElevatorManagerTest and SwingUserInterfaceTest classes
- * @author Ilias Komp
+ * @author Ilias, Viktor
  *
  */
 public class DummyElevator implements IElevator {
