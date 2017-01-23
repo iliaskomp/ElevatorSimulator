@@ -36,16 +36,25 @@ public class Main {
 				mainManager.setUI(ui);
 				ui.show();
 
-				TimerTask timerTask = new TimerTask() {
+				TimerTask updateTask = new TimerTask() {
 					@Override
 					public void run() {
 						mainManager.updateElevators();
+					}
+				};
+
+				TimerTask uiUpdateTask = new TimerTask() {
+					@Override
+					public void run() {
 						ui.update();
 					}
 				};
 
 				Timer timer = new Timer("Update Timer");
-				timer.schedule(timerTask, 50, UPDATE_INTERVAL);
+				timer.schedule(updateTask, 50, UPDATE_INTERVAL);
+
+				Timer uiTimer = new Timer("UI Update Timer");
+				uiTimer.schedule(uiUpdateTask, 200, UPDATE_INTERVAL);
 			}
 		});
 
