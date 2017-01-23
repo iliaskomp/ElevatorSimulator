@@ -11,7 +11,7 @@ import sqelevator.IElevator;
 /**
  * 
  * Test for the Elevator class
- * @author Ilias Komp
+ * @author Ilias, Viktor
  *
  */
 public class ElevatorTest {

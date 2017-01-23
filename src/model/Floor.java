@@ -1,10 +1,9 @@
 package model;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Floor.
  * Model of Floor.
- * @author Ilias Komp
+ * @author Ilias, Viktor
  */
 public class Floor {
 	
@@ -17,7 +16,7 @@ public class Floor {
 	/** The stop request. */
 	private boolean stopRequest;
 	
-	/** The floor. */
+	/** The floor number. */
 	private int floor;
 	
 	/**
@@ -32,7 +31,7 @@ public class Floor {
 	/**
 	 * Checks if is up call.
 	 *
-	 * @return true, if is up call
+	 * @return true, if there is an up call
 	 */
 	public boolean isUpCall() {
 		return upCall;
@@ -50,7 +49,7 @@ public class Floor {
 	/**
 	 * Checks if is down call.
 	 *
-	 * @return true, if is down call
+	 * @return true, if there is a down call
 	 */
 	public boolean isDownCall() {
 		return downCall;
@@ -66,9 +65,9 @@ public class Floor {
 	}
 
 	/**
-	 * Checks if is stop request.
+	 * Checks if there is a stop request.
 	 *
-	 * @return true, if is stop request
+	 * @return true, if there is a stop request
 	 */
 	public boolean isStopRequest() {
 		return stopRequest;

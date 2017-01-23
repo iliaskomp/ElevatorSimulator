@@ -13,7 +13,7 @@ import test.DummyElevator;
 /**
  * 
  * Test for the SwingUserInterface class
- * @author Ilias Komp
+* @author Ilias, Viktor
  *
  */
 public class SwingUserInterfaceTest {

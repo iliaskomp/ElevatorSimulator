@@ -4,23 +4,24 @@ import controller.ElevatorManagerUIInterface;
 
 /**
  * The Interface UIInterface.
+ * @author Ilias, Viktor
  */
 public interface UIInterface {
 
 	/**
-	 * Show error.
+	 * Show an error if there are a number of remote exceptions
 	 *
-	 * @param message the message
+	 * @param message the error message
 	 */
 	public void showError(String message);
 
 	/**
-	 * Show.
+	 * Sets up the UI structure without any values.
 	 */
 	public void show();
 
 	/**
-	 * Update.
+	 * Update the UI from the data of ElevatorManager for the selected Elevator
 	 */
 	public void update();
 
