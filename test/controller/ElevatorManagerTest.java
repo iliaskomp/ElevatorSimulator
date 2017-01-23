@@ -17,6 +17,12 @@ import sqelevator.IElevator;
 import test.DummyElevator;
 import ui.UIInterface;
 
+/**
+ * 
+ * Test for the ElevatorManager class
+ * @author Ilias Komp
+ *
+ */
 public class ElevatorManagerTest {
 
 	private ElevatorManager manager;

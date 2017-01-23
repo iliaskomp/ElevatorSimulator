@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
+@Suite.SuiteClasses({
 	controller.ElevatorManagerTest.class,
 	model.ElevatorTest.class,
 	model.FloorTest.class,

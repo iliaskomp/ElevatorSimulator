@@ -4,6 +4,12 @@ import java.rmi.RemoteException;
 
 import sqelevator.IElevator;
 
+/**
+ * 
+ * Dummy Elevator Simulator before the actual simulator was given
+ * @author Ilias Komp
+ *
+ */
 public class DummyElevatorSimulator implements IElevator {
 
 	// Number of floors in the building

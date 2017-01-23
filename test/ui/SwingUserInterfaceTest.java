@@ -10,6 +10,12 @@ import model.Elevator;
 import sqelevator.IElevator;
 import test.DummyElevator;
 
+/**
+ * 
+ * Test for the SwingUserInterface class
+ * @author Ilias Komp
+ *
+ */
 public class SwingUserInterfaceTest {
 	private IElevator controller;
 	private SwingUserInterface ui;

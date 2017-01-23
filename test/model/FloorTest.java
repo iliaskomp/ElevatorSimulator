@@ -5,6 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * Test for the Floor class
+ * @author Ilias Komp
+ *
+ */
 public class FloorTest {
 	private Floor floor;
 	

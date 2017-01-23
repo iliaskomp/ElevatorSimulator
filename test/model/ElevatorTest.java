@@ -8,6 +8,12 @@ import org.junit.Test;
 
 import sqelevator.IElevator;
 
+/**
+ * 
+ * Test for the Elevator class
+ * @author Ilias Komp
+ *
+ */
 public class ElevatorTest {
 	private Elevator elevator;
 

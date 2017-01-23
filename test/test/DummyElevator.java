@@ -4,6 +4,13 @@ import java.rmi.RemoteException;
 
 import sqelevator.IElevator;
 
+/**
+ * 
+ * DummyElevator class returning fixed values
+ * used in ElevatorManagerTest and SwingUserInterfaceTest classes
+ * @author Ilias Komp
+ *
+ */
 public class DummyElevator implements IElevator {
 
 	private int direction, target;
