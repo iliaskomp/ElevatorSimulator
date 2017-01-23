@@ -9,7 +9,7 @@ import model.Floor;
 import sqelevator.IElevator;
 import ui.UIInterface;
 
-public class ElevatorManager implements ElevatorManagerInterface, IElevatorAlgorithm {
+public class ElevatorManager implements ElevatorManagerInterface, ElevatorManagerUIInterface, ElevatorManagerAlgorithm {
 	protected static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
 	private final IElevator controller;

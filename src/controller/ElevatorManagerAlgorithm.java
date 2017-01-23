@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 import model.Elevator;
 
-public interface IElevatorAlgorithm {
+public interface ElevatorManagerAlgorithm {
 
 	void controlElevator(Elevator e) throws RemoteException;
 
