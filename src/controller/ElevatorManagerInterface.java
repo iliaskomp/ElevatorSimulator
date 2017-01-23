@@ -1,9 +1,8 @@
 package controller;
 
-import ui.UIInterface;
+import model.Elevator;
 
-public interface ElevatorManagerInterface extends ElevatorManagerUIInterface {
-	void updateElevators();
-	void setUI(UIInterface ui);
-	
+public interface ElevatorManagerInterface {
+	public void setTargetFloor(Elevator elevator, int targetFloor);
+	public int getFloorsCount();
 }

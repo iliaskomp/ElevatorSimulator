@@ -1,23 +1,12 @@
-//import static org.junit.Assert.*;
-//
-//import org.junit.Test;
-//
-//public class AllTests {
-//
-//	@Test
-//	public void test() {
-//		fail("Not yet implemented");
-//	}
-//
-//}
+package test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	controller.ElevatorManagerTest.class,
+	controller.ElevatorAlgorithmTest.class,
 	model.ElevatorTest.class,
 	model.FloorTest.class,
 	ui.SwingUserInterfaceTest.class

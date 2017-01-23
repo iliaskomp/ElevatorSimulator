@@ -32,54 +32,54 @@ import sqelevator.IElevator;
 
 /**
  * The Class SwingUserInterface is the entry point for the GUI.
- * 
- * 
- * 
+ *
+ *
+ *
  */
 public class SwingUserInterface implements UIInterface {
-	
+
 	/** The position text field. */
 	protected JTextField positionTextField;
-	
+
 	/** The direction text field. */
 	protected JTextField directionTextField;
-	
+
 	/** The speed text field. */
 	protected JTextField speedTextField;
-	
+
 	/** The payload text field. */
 	protected JTextField payloadTextField;
-	
+
 	/** The door status text field. */
 	protected JTextField doorStatusTextField;
-	
+
 	/** The target text field. */
 	protected JTextField targetTextField;
-	
+
 	/** The go target button. */
 	protected JButton goTargetButton;
-	
+
 	/** The frame. */
 	private JFrame frame;
-	
+
 	/** The elevator selector (dropdown) */
 	private JComboBox<String> elevatorSelector;
-	
+
 	/** The selected elevator according to the dropdown. */
 	private Elevator selectedElevator;
-	
+
 	/** The elevator manager. */
 	private ElevatorManagerUIInterface elevatorManager;
-	
+
 	/** The elevator panel. */
 	private ElevatorPanel elevatorPanel;
-	
+
 	/** The elevator scroll pane. */
 	private JScrollPane elevatorScrollPane;
-	
+
 	/** The Constant TEXTFIELD_LENGTH. */
 	private static final int TEXTFIELD_LENGTH = 8;
-	
+
 	/** The scroll pane last Y. */
 	private int scrollPaneLastY;
 
@@ -396,12 +396,11 @@ public class SwingUserInterface implements UIInterface {
 	/* (non-Javadoc)
 	 * @see ui.UIInterface#setElevatorManager(controller.ElevatorManagerInterface)
 	 */
-	public void setElevatorManager(ElevatorManagerInterface elevatorManager) {
+	public void setElevatorManager(ElevatorManagerUIInterface elevatorManager) {
 		this.elevatorManager = elevatorManager;
 		for (Elevator elevator : elevatorManager.getElevators()) {
 			elevatorSelector.addItem(elevator.getName());
 		}
-		elevatorManager.setUI(this);
 	}
 
 }

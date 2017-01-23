@@ -9,7 +9,7 @@ import model.Floor;
 import sqelevator.IElevator;
 import ui.UIInterface;
 
-public class ElevatorManager implements ElevatorManagerInterface, ElevatorManagerUIInterface, ElevatorManagerAlgorithm {
+public class ElevatorManager implements ElevatorManagerMainInterface, ElevatorManagerUIInterface, ElevatorManagerAlgorithmInterface {
 	protected static final int MAX_REMOTE_EXCEPTIONS = 5;
 	private List<Elevator> elevators;
 	private final IElevator controller;
@@ -19,6 +19,7 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 	// not in the setUI
 	private boolean listsInitialized;
 
+	private ElevatorManagerAlgorithmInterface algorithm;
 	private UIInterface ui;
 	private int exceptionsCatched, floorHeight;
 
@@ -27,6 +28,7 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 		ui = null;
 		listsInitialized = false;
 		elevators = null;
+		algorithm = this;
 	}
 
 	private void addElevators() throws RemoteException {
@@ -42,7 +44,7 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 		if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS) {
 			return;
 		}
-			
+
 		try {
 			if (!listsInitialized) {
 				createFloorsList();
@@ -53,7 +55,7 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 			for (Elevator e : elevators) {
 				updateElevator(e);
 				if (automaticMode) {
-					controlElevator(e);
+					algorithm.controlElevator(e, this);
 				}
 			}
 			for (Floor f : floors) {
@@ -64,7 +66,7 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 			exceptionsCatched++;
 			if (exceptionsCatched > MAX_REMOTE_EXCEPTIONS) {
 				ui.showError("Connection lost to the elevator. Please restart the application.");
-			}				
+			}
 		}
 	}
 
@@ -81,25 +83,25 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 	}
 
 	/* (non-Javadoc)
-	 * @see controller.IElevatorAlgorithm#controlElevator(model.Elevator)
+	 * @see controller.ElevatorManagerAlgorithm#controlElevator(model.Elevator)
 	 */
 	@Override
-	public void controlElevator(Elevator e) throws RemoteException {
+	public void controlElevator(Elevator e, ElevatorManagerInterface manager) throws RemoteException {
 		if (e.getNearestFloor() == e.getTargetFloor() && e.getSpeed() == 0
 				&& e.getDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN) {
 			if (e.getNearestFloor() == 0) {
 				e.setCommitedDirection(IElevator.ELEVATOR_DIRECTION_UP);
 			}
-			if (e.getNearestFloor() == floors.size() - 1) {
+			if (e.getNearestFloor() == manager.getFloorsCount() - 1) {
 				e.setCommitedDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
 			}
 			switch (e.getCommitedDirection()) {
 			case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
 			case IElevator.ELEVATOR_DIRECTION_DOWN:
-				setTargetFloor(e, e.getNearestFloor() - 1);
+				manager.setTargetFloor(e, e.getNearestFloor() - 1);
 				break;
 			case IElevator.ELEVATOR_DIRECTION_UP:
-				setTargetFloor(e, e.getNearestFloor() + 1);
+				manager.setTargetFloor(e, e.getNearestFloor() + 1);
 				break;
 			default:
 				break;
@@ -141,6 +143,10 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 		return floors;
 	}
 
+	public int getFloorsCount() {
+		return floors.size();
+	}
+
 	public int getFloorHeight() {
 		return floorHeight;
 	}
@@ -156,5 +162,10 @@ public class ElevatorManager implements ElevatorManagerInterface, ElevatorManage
 	public void setUI(UIInterface ui)
 	{
 		this.ui = ui;
+	}
+
+	@Override
+	public void setAlgorithm(ElevatorManagerAlgorithmInterface algorithm) {
+		this.algorithm = algorithm;
 	}
 }

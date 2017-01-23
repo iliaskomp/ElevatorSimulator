@@ -5,9 +5,7 @@ import java.util.List;
 import model.Elevator;
 import model.Floor;
 
-public interface ElevatorManagerUIInterface {
-
-	void setTargetFloor(Elevator elevator, int targetFloor);
+public interface ElevatorManagerUIInterface extends ElevatorManagerInterface {
 
 	void setAutomaticMode(boolean automaticMode);
 
