@@ -25,31 +25,75 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import controller.ElevatorManagerInterface;
+import controller.ElevatorManagerUIInterface;
 import model.Elevator;
 import sqelevator.IElevator;
 
+
+/**
+ * The Class SwingUserInterface is the entry point for the GUI.
+ * 
+ * 
+ * 
+ */
 public class SwingUserInterface implements UIInterface {
+	
+	/** The position text field. */
 	protected JTextField positionTextField;
+	
+	/** The direction text field. */
 	protected JTextField directionTextField;
+	
+	/** The speed text field. */
 	protected JTextField speedTextField;
+	
+	/** The payload text field. */
 	protected JTextField payloadTextField;
+	
+	/** The door status text field. */
 	protected JTextField doorStatusTextField;
+	
+	/** The target text field. */
 	protected JTextField targetTextField;
+	
+	/** The go target button. */
 	protected JButton goTargetButton;
+	
+	/** The frame. */
 	private JFrame frame;
+	
+	/** The elevator selector (dropdown) */
 	private JComboBox<String> elevatorSelector;
+	
+	/** The selected elevator according to the dropdown. */
 	private Elevator selectedElevator;
-	private ElevatorManagerInterface elevatorManager;
+	
+	/** The elevator manager. */
+	private ElevatorManagerUIInterface elevatorManager;
+	
+	/** The elevator panel. */
 	private ElevatorPanel elevatorPanel;
+	
+	/** The elevator scroll pane. */
 	private JScrollPane elevatorScrollPane;
+	
+	/** The Constant TEXTFIELD_LENGTH. */
 	private static final int TEXTFIELD_LENGTH = 8;
+	
+	/** The scroll pane last Y. */
 	private int scrollPaneLastY;
 
+	/**
+	 * Instantiates a new swing user interface.
+	 */
 	public SwingUserInterface() {
 		elevatorSelector = new JComboBox<String>();
 		scrollPaneLastY = 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see ui.UIInterface#update()
+	 */
 	public void update() {
 		for (Elevator e : elevatorManager.getElevators()) {
 			if (e.getName().equals(getSelectedElevatorName())) {
@@ -66,6 +110,11 @@ public class SwingUserInterface implements UIInterface {
 		}
 	}
 
+	/**
+	 * Update ui data.
+	 *
+	 * @param e the e
+	 */
 	private void updateUiData(Elevator e) {
 		if (e != null) {
 			setPositionTextField(e.getPosition() + "");
@@ -77,6 +126,9 @@ public class SwingUserInterface implements UIInterface {
 
 	}
 
+	/**
+	 * Setup.
+	 */
 	protected void setup() {
 		frame = new JFrame("Elevator Management");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,11 +155,19 @@ public class SwingUserInterface implements UIInterface {
 		frame.pack();
 	}
 
+	/* (non-Javadoc)
+	 * @see ui.UIInterface#show()
+	 */
 	public void show() {
 		setup();
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Update data panel.
+	 *
+	 * @param dataPanel the data panel
+	 */
 	private void updateDataPanel(JPanel dataPanel) {
 		// Create and populate the panel.
 		JPanel dataListPanel = new JPanel(new SpringLayout());
@@ -222,6 +282,12 @@ public class SwingUserInterface implements UIInterface {
 
 	}
 
+	/**
+	 * Change font.
+	 *
+	 * @param component the component
+	 * @param font the font
+	 */
 	public static void changeFont(Component component, Font font) {
 		component.setFont(font);
 		if (component instanceof Container) {
@@ -231,16 +297,29 @@ public class SwingUserInterface implements UIInterface {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ui.UIInterface#showError(java.lang.String)
+	 */
 	@Override
 	public void showError(String message) {
 		JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
+	/**
+	 * Sets the position text field.
+	 *
+	 * @param position the new position text field
+	 */
 	// Getters/Setters
 	private void setPositionTextField(String position) {
 		positionTextField.setText(position);
 	}
 
+	/**
+	 * Sets the direction text field.
+	 *
+	 * @param commitedDirection the new direction text field
+	 */
 	private void setDirectionTextField(int commitedDirection) {
 		String direction;
 		switch (commitedDirection) {
@@ -260,14 +339,29 @@ public class SwingUserInterface implements UIInterface {
 		directionTextField.setText(direction);
 	}
 
+	/**
+	 * Sets the speed text field.
+	 *
+	 * @param speed the new speed text field
+	 */
 	private void setSpeedTextField(String speed) {
 		speedTextField.setText(speed);
 	}
 
+	/**
+	 * Sets the payload text field.
+	 *
+	 * @param payload the new payload text field
+	 */
 	private void setPayloadTextField(String payload) {
 		payloadTextField.setText(payload);
 	}
 
+	/**
+	 * Sets the door status text field.
+	 *
+	 * @param doorStatus the new door status text field
+	 */
 	private void setDoorStatusTextField(int doorStatus) {
 		String status;
 		switch (doorStatus) {
@@ -290,10 +384,18 @@ public class SwingUserInterface implements UIInterface {
 		doorStatusTextField.setText(status);
 	}
 
+	/**
+	 * Gets the selected elevator name.
+	 *
+	 * @return the selected elevator name
+	 */
 	private String getSelectedElevatorName() {
 		return elevatorSelector.getSelectedItem().toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see ui.UIInterface#setElevatorManager(controller.ElevatorManagerInterface)
+	 */
 	public void setElevatorManager(ElevatorManagerInterface elevatorManager) {
 		this.elevatorManager = elevatorManager;
 		for (Elevator elevator : elevatorManager.getElevators()) {
