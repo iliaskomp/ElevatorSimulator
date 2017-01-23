@@ -13,12 +13,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import model.Elevator;
 import sqelevator.IElevator;
 import test.DummyElevator;
 import ui.UIInterface;
 
 /**
- * 
+ *
  * Test for the ElevatorManager class
  * @author Ilias Komp
  *
@@ -31,6 +32,8 @@ public class ElevatorManagerTest {
 	public EasyMockRule rule = new EasyMockRule(this);
 	@Mock
 	private UIInterface uiMock;
+	@Mock
+	private ElevatorManagerAlgorithmInterface algorithm;
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
@@ -62,6 +65,22 @@ public class ElevatorManagerTest {
 		manager.setTargetFloor(manager.getElevators().get(0), 0);
 		manager.updateElevators();
 		assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, manager.getElevators().get(0).getCommitedDirection());
+	}
+
+	@Test
+	public void testAutomaticModeCalled() throws RemoteException {
+		Elevator e = manager.getElevators().get(0);
+		algorithm.controlElevator(e, manager);
+		replay(algorithm);
+		manager.setAlgorithm(algorithm);
+		manager.setAutomaticMode(true);
+		manager.updateElevators();
+		verify(algorithm);
+	}
+
+	@Test
+	public void testFloorsCount() {
+		assertEquals(10, manager.getFloorsCount());
 	}
 
 	// Errors
